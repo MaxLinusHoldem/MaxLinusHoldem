@@ -5,7 +5,7 @@ import java.util.ArrayList;
  * This class is the main game class of the game.
  * 
  * @author Linus Wåreus
- * @version 2014.05.03
+ * @version 2014.05.05
  */
 public class Game {
 	private Dealer dealer;
@@ -40,7 +40,7 @@ public class Game {
 	
 	private void actPlayer() {
 		for (Player p : activePlayers) {
-			if(!p.act(graficUserInterface)) {
+			if(!p.act()) {
 				activePlayers.remove(p);
 			}
 		}

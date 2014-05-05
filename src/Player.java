@@ -4,7 +4,7 @@ import java.util.ArrayList;
  * The abstract class Player. 
  * 
  * @author Linus Wåreus
- * @version 2014.05.02
+ * @version 2014.05.05
  */
 public abstract class Player {
 	protected String name;
@@ -16,7 +16,7 @@ public abstract class Player {
 		cards = new ArrayList<Card>();
 	}
 
-	public abstract boolean act(GUI graficUserInterface);
+	public abstract boolean act();
 	
 	/**
 	 * Gets the name of the person.
@@ -37,48 +37,54 @@ public abstract class Player {
 	}
 	
 	/**
+	 * Returns the players current cash balance.
 	 * 
-	 * @return
+	 * @return cash The players current cash balance.
 	 */
 	public int getCash() {
 		return this.cash;
 	}
 	
 	/**
+	 * Adds cash to the players cash balance.
 	 * 
-	 * @param profit
+	 * @param profit The cash to be added.
 	 */
 	public void addCash(int profit) {
 		this.cash += profit;
 	}
 	
 	/**
+	 * Lets the player bet in the game.
 	 * 
-	 * @param loss
-	 * @return
+	 * @param bet The cash to be bet.
+	 * @throws IllegalArgumentException If the user tries to bet more money than he or she has. 
 	 */
-	public int removeCash(int loss) {
-		this.cash -= loss;
-		return loss;
+	public void bet(int bet) throws IllegalArgumentException {
+		if (bet > this.cash) {
+			throw new IllegalArgumentException ("You can't bet more maney than you have.");
+		}
+		this.cash -= bet;
 	}
 	
 	/**
-	 * Returns the person's cards.
+	 * Returns the player's cards.
 	 * 
-	 * @return The person's cards.
+	 * @return The player's cards.
 	 */
 	public ArrayList<Card> getCards() {
 		return this.cards;
 	}
+	
 	/**
-	 * Gives the person a card.
+	 * Gives the player a card.
 	 */
 	public void giveCard(Card card) {
 		this.cards.add(card);
 	}
 	
 	/**
-	 * Removes all cards from the person.
+	 * Removes all cards from the player.
 	 */
 	public void removeCards() {
 		this.cards = new ArrayList<Card>();

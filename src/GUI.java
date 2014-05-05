@@ -12,7 +12,7 @@ import javax.swing.border.*;
  * The grafic user interface for the game MaxLinusHold'em.
  * 
  * @author Linus Wåreus
- * @version 2014.05.03
+ * @version 2014.05.05
  */
 public class GUI {
 	private Game game;
@@ -172,6 +172,7 @@ public class GUI {
 		makeGamePlan();
 	}
 	
+	@SuppressWarnings("serial")
 	private class ImagePanel extends JComponent {
 		private Image image;
 		

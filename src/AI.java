@@ -11,7 +11,7 @@ public class AI extends Player {
 	}
 	
 	@Override
-	public boolean act(GUI graficUserInterface) {
+	public boolean act() {
 		// TODO Auto-generated method stub
 		return true;
 	}

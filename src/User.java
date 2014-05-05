@@ -11,8 +11,7 @@ public class User extends Player {
 	}
 
 	@Override
-	public boolean act(GUI graficUserInterface) {
-		graficUserInterface.makeGamePlan();
+	public boolean act() {
 		return true;
 	}
 }

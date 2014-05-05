@@ -7,13 +7,13 @@ import javax.imageio.*;
  * This class creates a playing card.
  * 
  * @author Linus Wåreus
- * @version 2014.04.29
+ * @version 2014.05.05
  */
 public class Card {
 	private int value; // The cards value.
 	private String suit; // The cards suit.
 	private String rank; // The cards rank.
-	private BufferedImage image;
+	private BufferedImage image; // The card's image.
 	
 	// The approved suits for a card.
 	public static final String CLUBS = "Clubs";
@@ -63,6 +63,18 @@ public class Card {
 	}
 	
 	/**
+	 * Tries to load the card's image from the file system.
+	 */
+	private void loadImage() {
+		try {
+		    image = ImageIO.read(new File("../res/cards/" + toString() + ".png"));
+		} catch (IOException e) {
+			System.err.println(e);
+			System.exit(1);
+		}
+	}
+	
+	/**
 	 * Returns the cards value.
 	 * 
 	 * @return value The cards value.
@@ -72,13 +84,12 @@ public class Card {
 	}
 	
 	/**
+	 * Returns the card's image.
 	 * 
+	 * @return image The card's image.
 	 */
-	private void loadImage() {
-		try {
-		    image = ImageIO.read(new File(this.getClass().getResource("cards/" + toString() + ".png").getFile()));
-		} catch (IOException e) {
-		}
+	public BufferedImage getImage() {
+		return this.image;
 	}
 	
 	/**

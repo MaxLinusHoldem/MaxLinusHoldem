@@ -9,10 +9,11 @@ import java.util.EmptyStackException;
  * This is the test class for the class Deck.
  * 
  * @author Linus Wåreus
- * @version 2014.05.01
+ * @version 2014.05.05
  */
 public class DeckTest {
 	private Deck deck;
+	
 	/**
      * Sets up the test fixture.
      *
@@ -46,5 +47,4 @@ public class DeckTest {
 			}
 		}
 	}
-
 }

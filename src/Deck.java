@@ -2,13 +2,17 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.util.Random;
 import java.util.EmptyStackException;
+import java.awt.*;
+import java.awt.image.*;
+import javax.swing.*;
+import javax.swing.border.*;
 
 /**
  * The class Deck.
  * This class creates and shuffles a deck with cards.
  * 
  * @author Linus Wåreus
- * @version 2014.04.29
+ * @version 2014.05.05
  */
 public class Deck {
 	private Stack<Card> deck; // The shuffled deck.
@@ -62,6 +66,15 @@ public class Deck {
 	}
 	
 	/**
+	 * Returns true if the deck is empty, false otherwise.
+	 * 
+	 * @param true if the deck is empty, false otherwise.
+	 */
+	public boolean empty() {
+		return deck.empty();
+	}
+	
+	/**
 	 * Produces a string with all the cards in the deck.
 	 * 
 	 * @return deckString A string with all the cards in the deck.
@@ -77,9 +90,61 @@ public class Deck {
 	
 	/**
 	 * Main method of the class Deck.
+	 * This class test if all the card's image load correctly and
+	 * show the right image to the right card.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException{
 		Deck deck = new Deck();
-		System.out.print(deck);
+		
+		JFrame frame = new JFrame("Test Deck");
+		
+		JPanel contentPane = (JPanel)frame.getContentPane();
+        contentPane.setBorder(new EmptyBorder(200, 200, 200, 200));
+        
+		ImagePanel mainPanel;
+		JLabel cardName;
+		
+		while(!deck.empty()) {
+    		contentPane.removeAll();
+	        Card temp = deck.drawCard();
+	        BufferedImage cardImage = temp.getImage();
+			
+			mainPanel = deck.new ImagePanel(cardImage);
+			contentPane.add(mainPanel, BorderLayout.CENTER);
+			mainPanel.paintComponent(cardImage.getGraphics());
+			
+			cardName = new JLabel(temp.toString());
+			contentPane.add(cardName, BorderLayout.SOUTH);
+			
+			frame.pack();
+			frame.setVisible(true);
+			
+			Thread.sleep(1000);
+        }
+		
+		contentPane.removeAll();
+    	cardName = new JLabel("No more cards.");
+		contentPane.add(cardName, BorderLayout.SOUTH);
+		
+		frame.pack();
+		frame.setVisible(true);
+	}
+	
+	@SuppressWarnings("serial")
+	private class ImagePanel extends JComponent {
+		private Image image;
+		
+	   ImagePanel(Image image) {
+	    	this.image = image;
+	    	setPreferredSize(new Dimension(image.getWidth(null), image.getHeight(null)));
+	    }
+	
+		@Override
+		public void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			if (image != null) {
+				g.drawImage(image, 0, 0, null);
+			}
+		}
 	}
 }
