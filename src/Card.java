@@ -1,3 +1,7 @@
+import java.awt.image.*;
+import java.io.*;
+import javax.imageio.*;
+
 /**
  * The class Card.
  * This class creates a playing card.
@@ -9,6 +13,7 @@ public class Card {
 	private int value; // The cards value.
 	private String suit; // The cards suit.
 	private String rank; // The cards rank.
+	private BufferedImage image;
 	
 	// The approved suits for a card.
 	public static final String CLUBS = "Clubs";
@@ -34,6 +39,7 @@ public class Card {
 		this.value = value;
 		this.suit = suit;
 		this.rank = calculateRank(value);
+		loadImage();
 	}
 
 	/**
@@ -63,6 +69,16 @@ public class Card {
 	 */
 	public int getValue() {
 		return this.value;
+	}
+	
+	/**
+	 * 
+	 */
+	private void loadImage() {
+		try {
+		    image = ImageIO.read(new File(this.getClass().getResource("cards/" + toString() + ".png").getFile()));
+		} catch (IOException e) {
+		}
 	}
 	
 	/**
