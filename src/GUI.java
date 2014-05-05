@@ -1,5 +1,10 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.*;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -13,6 +18,7 @@ public class GUI {
 	private Game game;
 	private JFrame frame;
 	private JPanel contentPane;
+	private ImagePanel mainPanel;
 	private JButton newGameButton;
 	private JButton exitButton;
 	private JButton ceckButton;
@@ -103,8 +109,18 @@ public class GUI {
      * Create the Swing frame and its content.
      */
 	public void makeGamePlan() {
-		contentPane = (JPanel)frame.getContentPane();
 		contentPane.removeAll();
+
+		BufferedImage table = null;
+		try {
+		    table = ImageIO.read(new File("../res/table.png"));
+		} catch (IOException e) {
+			System.err.println(e);
+		}
+		
+		mainPanel = new ImagePanel(table);
+		contentPane.add(mainPanel, BorderLayout.CENTER);
+		mainPanel.paintComponent(table.getGraphics());
 		
 		JPanel actions = new JPanel();
 		actions.setLayout(new GridLayout(1, 0));
@@ -153,7 +169,23 @@ public class GUI {
      * 
      */
 	private void newGame() {
-		game.play();
+		makeGamePlan();
 	}
 	
+	private class ImagePanel extends JComponent {
+		private Image image;
+		
+	   ImagePanel(Image image) {
+	    	this.image = image;
+	    	setPreferredSize(new Dimension(image.getWidth(null), image.getHeight(null)));
+	    }
+	
+		@Override
+		public void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			if (image != null) {
+				g.drawImage(image, 0, 0, null);
+			}
+		}
+	}
 }
