@@ -5,18 +5,20 @@ import java.util.ArrayList;
  * This class acts as the dealer of the game.
  * 
  * @author Linus Wåreus
- * @version 2014.05.05
+ * @version 2014.05.07
  */
 public class Dealer {
 	private Deck deck;
 	private ArrayList<Card> board;
 	private ArrayList<Player> players;
 	private int pot;
+	private int currentBet;
 	
 	public Dealer(ArrayList<Player> players) {
 		this.deck = new Deck();
 		this.board = new ArrayList<Card>();
 		this.players = players;
+		this.currentBet = 0;
 		removeCards();
 	}
 	
@@ -70,7 +72,7 @@ public class Dealer {
 	 * 
 	 * @param bet The bet to be placed in the pot.
 	 */
-	public void bet(int bet) {
+	public void addPot(int bet) {
 		this.pot += bet;
 	}
 	
@@ -95,6 +97,24 @@ public class Dealer {
 	}
 	
 	/**
+	 * Returns the current bet.
+	 * 
+	 * @return currentBet The current bet.
+	 */
+	public int getCurrentBet() {
+		return this.currentBet;
+	}
+	
+	/**
+	 * Sets the current bet.
+	 * 
+	 * @param currentBet The new current bet.
+	 */
+	public void setCurrentBet(int currentBet) {
+		this.currentBet = currentBet;
+	}
+	
+	/**
 	 * Selects a winner in the game.
 	 * 
 	 * @param activePlayers All active players in the game.
@@ -102,7 +122,7 @@ public class Dealer {
 	public void selectWinner(ArrayList<Player> activePlayers) {
 		for (int i = 0; i < activePlayers.size(); i++) {
 			ArrayList<Card> cards = activePlayers.get(i).getCards();
-			Hand hand = new Hand(cards, board);
+			Evaluate hand = new Evaluate(cards, board);
 			System.out.println("The player got a " + hand.testHand() + ": " + hand);
 		}
 		System.out.println();

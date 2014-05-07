@@ -2,16 +2,16 @@
  * The class Player.
  * 
  * @author Linus Wåreus
- * @version 2014.05.05
+ * @version 2014.05.07
  */
 public class User extends Player {
 	
-	User() {
-		super();
+	User(int startMoney) {
+		super(startMoney);
 	}
 
 	@Override
-	public boolean act() {
+	public boolean act(int currentBet) {
 		return true;
 	}
 }

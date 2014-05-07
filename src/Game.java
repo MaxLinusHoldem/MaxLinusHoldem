@@ -5,12 +5,13 @@ import java.util.ArrayList;
  * This class is the main game class of the game.
  * 
  * @author Linus Wåreus
- * @version 2014.05.05
+ * @version 2014.05.07
  */
 public class Game {
 	private Dealer dealer;
 	private ArrayList<Player> players;
 	private ArrayList<Player> activePlayers;
+	public final int STARTMONEY = 100;
 	
 	/**
 	 * The default constructor of the class Game.
@@ -20,8 +21,8 @@ public class Game {
 	}
 	
 	public void play() {
-		players.add(new User());
-		players.add(new AI());
+		players.add(new User(STARTMONEY));
+		players.add(new AI(STARTMONEY));
 		boolean gameFinished = false;
 		while (!gameFinished) {
 			dealer = new Dealer(players);
@@ -34,15 +35,26 @@ public class Game {
 			dealer.dealTheTurn();
 			actPlayer();
 			dealer.dealTheRiver();
+			actPlayer();
 			dealer.selectWinner(activePlayers);
 		}
 	}
 	
 	private void actPlayer() {
+		for (Player p : players) {
+			p.resetBet();
+		}
+		
 		for (Player p : activePlayers) {
-			if(!p.act()) {
+			if (!p.act(dealer.getCurrentBet())) {
 				activePlayers.remove(p);
+			} else {
+				dealer.setCurrentBet(p.getBet());
 			}
+		}
+		
+		for (Player p : activePlayers) {
+			dealer.addPot(p.getBet());
 		}
 	}
 }

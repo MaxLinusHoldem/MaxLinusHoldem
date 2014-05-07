@@ -9,7 +9,7 @@ import javax.imageio.*;
  * @author Linus Wåreus
  * @version 2014.05.05
  */
-public class Card {
+public class Card implements Comparable<Card> {
 	private int value; // The cards value.
 	private String suit; // The cards suit.
 	private String rank; // The cards rank.
@@ -75,12 +75,21 @@ public class Card {
 	}
 	
 	/**
-	 * Returns the cards value.
+	 * Returns the card's value.
 	 * 
 	 * @return value The cards value.
 	 */
 	public int getValue() {
 		return this.value;
+	}
+	
+	/**
+	 * Returns the card's suit
+	 * 
+	 * @return suit The card's suit.
+	 */
+	public String getSuit() {
+		return this.suit;
 	}
 	
 	/**
@@ -100,5 +109,17 @@ public class Card {
 	@Override
 	public String toString() {
 		return rank + " of " + suit;
+	}
+	
+	/**
+	 * Compares two cards values to each other.
+	 * 
+	 * @param card The card to compare this card to.
+	 * @return A negative integer, zero, or a positive integer as this cards value
+	 * 		   is less than, equal to, or greater than the specified cards value. 
+	 */
+	@Override
+	public int compareTo(Card card) {
+		return this.value - card.getValue();
 	}
 }

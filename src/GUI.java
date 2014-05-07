@@ -162,7 +162,7 @@ public class GUI {
      * 
      */
     private String welcomeMessage() {
-    	return "Welcome to MaxLinusHold 'em!";
+    	return "Welcome to MaxLinus Hold 'em!";
     }
     
     /**
