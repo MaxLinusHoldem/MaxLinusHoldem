@@ -184,12 +184,14 @@ public class Dealer {
 		Player bestPlayer = null;
 		int bestHand = 0;
 		for (int i = 0; i < activePlayers.size(); i++) {
+			TexasHoldem.delay(500);
 			activePlayers.get(i).showCards();
 			ArrayList<Card> cards = new ArrayList<Card>();
 			for (int j = 0; j < board.size(); j++) {
 				cards.add(board.get(j).getCard());
 			}
 			Evaluate hand = new Evaluate(activePlayers.get(i).getCards(), cards);
+			activePlayers.get(i).setWinningHand(hand);
 			int temp = hand.testHand();
 			if (temp > bestHand) {
 				bestPlayer = activePlayers.get(i);

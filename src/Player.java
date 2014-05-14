@@ -12,6 +12,7 @@ public abstract class Player {
 	protected int money;
 	protected int bet;
 	protected Card[] hand;
+	protected Evaluate winningHand;
 	public static final int STARTMONEY = 100;
 
 	protected GamePanel gamePanel;
@@ -36,6 +37,7 @@ public abstract class Player {
 		this.money = STARTMONEY;
 		this.gamePanel = gamePanel;
 		this.hand = new Card[2];
+		this.winningHand = null;
 
 		BufferedImage chairImg = null;
 		String chairImgPath = "../res/orange_circle.png";
@@ -213,6 +215,13 @@ public abstract class Player {
 		return ret;
 	}
 	
+	public void setWinningHand(Evaluate hand) {
+		this.winningHand = hand;
+	}
+	
+	public Evaluate getWinningHand() {
+		return this.winningHand;
+	}
 	/**
 	 * Lets the player cecked.
 	 * 

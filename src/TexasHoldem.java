@@ -108,7 +108,8 @@ public class TexasHoldem extends JFrame {
 				continue;
 			}
 
-			JOptionPane.showMessageDialog(this, dealer.selectWinner().getName() + " won " + dealer.getPot() +" $.");
+			Player temp = dealer.selectWinner();
+			JOptionPane.showMessageDialog(this, temp.getName() + " won " + dealer.getPot() +" $ with a " + temp.getWinningHand());
 			dealer.removePot();
 			dealer.removeBoard();
 		}
