@@ -100,11 +100,57 @@ public class GamePanel extends JLayeredPane {
 		} else if (dealerID == 2) {
 			dealerX = 1271 - horizontalDistance - dealerImg.getWidth();
 			dealerY = 706 - verticalDistanceLong - dealerImg.getHeight();
+
+			smallBlindX = 1271 - horizontalDistanceLong - smallBlindImg.getWidth();
+			smallBlindY = 706 - verticalDistance - smallBlindImg.getHeight();
+
+			bigBlindX = horizontalDistanceLong;
+			bigBlindY = 706 - verticalDistance - bigBlindImg.getHeight();
 		} else if (dealerID == 3) {
+			dealerX = 1271 - horizontalDistanceLong - dealerImg.getWidth();
+			dealerY = 706 - verticalDistance - dealerImg.getHeight();
+
+			smallBlindX = horizontalDistanceLong;
+			smallBlindY = 706 - verticalDistance - smallBlindImg.getHeight();
+
+			bigBlindX = horizontalDistance;
+			bigBlindY = 706 - verticalDistanceLong - bigBlindImg.getHeight();
 		} else if (dealerID == 4) {
+			dealerX = horizontalDistanceLong;
+			dealerY = 706 - verticalDistance - dealerImg.getHeight();
+
+			smallBlindX = horizontalDistance;
+			smallBlindY = 706 - verticalDistanceLong - smallBlindImg.getHeight();
+
+			bigBlindX = horizontalDistance;
+			bigBlindY = verticalDistanceLong;
 		} else if (dealerID == 5) {
+			dealerX = horizontalDistance;
+			dealerY = 706 - verticalDistanceLong - dealerImg.getHeight();
+
+			smallBlindX = horizontalDistance;
+			smallBlindY = verticalDistanceLong;
+
+			bigBlindX = horizontalDistanceLong;
+			bigBlindY = verticalDistance;
 		} else if (dealerID == 6) {
+			dealerX = horizontalDistance;
+			dealerY = verticalDistanceLong;
+
+			smallBlindX = horizontalDistanceLong;
+			smallBlindY = verticalDistance;
+
+			bigBlindX = 1271 - horizontalDistanceLong - bigBlindImg.getWidth();
+			bigBlindY = verticalDistance;
 		} else {
+			dealerX = horizontalDistanceLong;
+			dealerY = verticalDistance;
+
+			smallBlindX = 1271 - horizontalDistanceLong - smallBlindImg.getWidth();
+			smallBlindY = verticalDistance;
+
+			bigBlindX = 1271 - horizontalDistance - bigBlindImg.getWidth();
+			bigBlindY = verticalDistanceLong;
 		}
 
 		remove(dealerLabel);
