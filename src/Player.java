@@ -260,6 +260,9 @@ public abstract class Player {
 		if (amount < 0) {
 			throw new IllegalArgumentException ("You can't bet a negative amount.");
 		}
+		if (amount < TexasHoldem.BIGBLIND) {
+			throw new IllegalArgumentException ("You can't bet less than the big blind.");
+		}
 		if (amount > this.money) {
 			throw new IllegalArgumentException ("You can't bet more money than you have.");
 		}
@@ -279,5 +282,12 @@ public abstract class Player {
 		gui.getDealer().getActivePlayers().remove(this);
 		this.removeCards();
 		return false;
+	}
+	
+	public void betSmallBlind() {
+		this.bet += TexasHoldem.SMALLBLIND;
+		this.money -= TexasHoldem.SMALLBLIND;
+		cashLabel.setText(String.format("%d $", money));
+		betLabel.setText(String.format("Current bet: %d $", bet));
 	}
 }

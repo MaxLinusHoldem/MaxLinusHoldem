@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 
 public class TexasHoldem extends JFrame {
-	private int smallBlind = 1;
-	private int bigBlind = 2;
+	public static final int BIGBLIND = 2;
+	public static final int SMALLBLIND = BIGBLIND / 2;
 	private Container contentPane;
 	private GameScreen gameScreen;
 	private ArrayList<Player> players;
@@ -69,12 +69,12 @@ public class TexasHoldem extends JFrame {
 
 			repaint();
 
-			players.get((dealerID + 1) % 8).bet(smallBlind);
+			players.get((dealerID + 1) % 8).betSmallBlind();
 			delay(500);
 
-			players.get((dealerID + 2) % 8).bet(bigBlind);
+			players.get((dealerID + 2) % 8).bet(BIGBLIND);
 			delay(500);
-			currentBet = bigBlind;
+			currentBet = BIGBLIND;
 			currentBetPlayer = (dealerID + 2) % 8;
 			
 			dealer.dealCards();
@@ -142,8 +142,12 @@ public class TexasHoldem extends JFrame {
 			currentPlayer++;
 		}
 		
-		for (Player p : players) {
-			dealer.addPot(p.removeBet());
+		for (int i = 0; i < players.size(); i++) {
+			dealer.addPot(players.get(i).removeBet());
+			if (players.get(i).getMoney() == 0) {
+				players.remove(players.get(i));
+				i--;
+			}
 		}
 		return true;
 	}

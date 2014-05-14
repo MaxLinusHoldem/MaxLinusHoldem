@@ -197,7 +197,6 @@ public class Dealer {
 				bestPlayer = activePlayers.get(i);
 				bestHand = temp;
 			}
-			System.out.println("The player " + activePlayers.get(i).getName() + " got a " + hand + ": " + hand.getHand());
 		}
 		bestPlayer.addMoney(this.getPot());
 		return bestPlayer;
