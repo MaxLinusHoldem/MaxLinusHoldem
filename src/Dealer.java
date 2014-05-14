@@ -184,6 +184,7 @@ public class Dealer {
 		Player bestPlayer = null;
 		int bestHand = 0;
 		for (int i = 0; i < activePlayers.size(); i++) {
+			activePlayers.get(i).showCards();
 			ArrayList<Card> cards = new ArrayList<Card>();
 			for (int j = 0; j < board.size(); j++) {
 				cards.add(board.get(j).getCard());

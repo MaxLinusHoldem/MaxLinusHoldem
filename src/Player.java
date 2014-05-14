@@ -133,6 +133,11 @@ public abstract class Player {
 		}
 	}
 
+	public void showCards() {
+		cardLabel1.setIcon(new ImageIcon(hand[0].getImage()));
+		cardLabel2.setIcon(new ImageIcon(hand[1].getImage()));
+	}
+
 	public void removeCards() {
 		hand[0] = null;
 		hand[1] = null;
