@@ -12,6 +12,7 @@ public class GamePanel extends JLayeredPane {
 	private JLabel dealerLabel;
 	private JLabel smallBlindLabel;
 	private JLabel bigBlindLabel;
+	private JLabel potLabel;
 
 	public GamePanel() {
 		setLayout(null);
@@ -65,7 +66,7 @@ public class GamePanel extends JLayeredPane {
 		tableLabel.repaint();
 		add(tableLabel);
 	}
-
+	
 	public void setDealerAndBlinds(int dealerID) {
 		int horizontalDistance = 294;
 		int horizontalDistanceLong = 424;

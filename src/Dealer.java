@@ -1,4 +1,8 @@
+import java.awt.Color;
 import java.util.ArrayList;
+
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 /**
  * The class Dealer.
@@ -15,6 +19,7 @@ public class Dealer {
 	private int currentBet;
 	private Player currentDealer;
 	private GamePanel gamePanel;
+	private JLabel potLabel;
 	
 	public Dealer(ArrayList<Player> activePlayers, GamePanel gamePanel) {
 		this.deck = new Deck();
@@ -23,6 +28,14 @@ public class Dealer {
 		this.activePlayers = new ArrayList<Player>(activePlayers);
 		this.currentBet = 0;
 		removeCards();
+		
+		potLabel = new JLabel("Pot: " + pot + "$", SwingConstants.CENTER);
+		potLabel.setBounds((1271 - 216) / 2, 385, 216, 11);
+		potLabel.setBackground(new Color(0x9F, 0x4F, 0x00));
+		potLabel.setOpaque(true);
+		potLabel.repaint();
+		gamePanel.add(potLabel);
+		gamePanel.setPosition(potLabel, 0);
 	}
 	
 	/**
@@ -82,6 +95,7 @@ public class Dealer {
 	 */
 	public void addPot(int bet) {
 		this.pot += bet;
+		potLabel.setText("Pot: " + pot + "$");
 	}
 	
 	/**
@@ -101,6 +115,7 @@ public class Dealer {
 	public int removePot() {
 		int pot = this.pot;
 		this.pot = 0;
+		potLabel.setText("Pot: " + pot + "$");
 		return pot;
 	}
 	
@@ -165,7 +180,7 @@ public class Dealer {
 	/**
 	 * Selects a winner in the game.
 	 */
-	public void selectWinner() {
+	public Player selectWinner() {
 		Player bestPlayer = null;
 		int bestHand = 0;
 		for (int i = 0; i < activePlayers.size(); i++) {
@@ -181,7 +196,8 @@ public class Dealer {
 			}
 			System.out.println("The player " + activePlayers.get(i).getName() + " got a " + hand + ": " + hand.getHand());
 		}
-		System.out.println(bestPlayer.getName() + " won!");
+		bestPlayer.addMoney(this.getPot());
+		return bestPlayer;
 	}
 	
 	/*

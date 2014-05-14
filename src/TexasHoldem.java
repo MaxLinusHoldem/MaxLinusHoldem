@@ -85,12 +85,14 @@ public class TexasHoldem extends JFrame {
 			}
 
 			dealer.dealTheFlop();
-
+			
+			currentBet = 0;
 			if (!bettingRound(dealerID + 1)) {
 				dealer.removeBoard();
 				continue;
 			}
-
+			
+			currentBet = 0;
 			dealer.dealTheTurn();
 
 			if (!bettingRound(dealerID + 1)) {
@@ -98,6 +100,7 @@ public class TexasHoldem extends JFrame {
 				continue;
 			}
 
+			currentBet = 0;
 			dealer.dealTheRiver();
 
 			if (!bettingRound(dealerID + 1)) {
@@ -105,30 +108,41 @@ public class TexasHoldem extends JFrame {
 				continue;
 			}
 
-			//showdown();
+			JOptionPane.showMessageDialog(this, dealer.selectWinner().getName() + " won " + dealer.getPot() +" $.");
+			dealer.removePot();
 			dealer.removeBoard();
 		}
 	}
 
 	private boolean bettingRound(int firstPlayer) {
 		int currentPlayer = firstPlayer;
+		currentBetPlayer = currentPlayer;
 		boolean finished = false;
 		
 		while (!finished) {
 			currentPlayer = currentPlayer % dealer.getActivePlayers().size();
 			dealer.getActivePlayers().get(currentPlayer).act(this);
 			if (currentBet == dealer.getActivePlayers().get(currentPlayer).getBet() &&
-				currentPlayer + 1 % dealer.getActivePlayers().size() == currentBetPlayer) {
-				return true;
+				(currentPlayer + 1) % dealer.getActivePlayers().size() == currentBetPlayer) {
+				finished = true;
 			} else if (currentBet < dealer.getActivePlayers().get(currentPlayer).getBet()) {
 				currentBet = dealer.getActivePlayers().get(currentPlayer).getBet();
 				currentBetPlayer = currentPlayer;
 			}
 			
 			if (dealer.getActivePlayers().size() == 1) {
+				for (Player p : players) {
+					dealer.addPot(p.removeBet());
+				}
+				JOptionPane.showMessageDialog(this, dealer.getActivePlayers().get(0).getName() + " won " + dealer.getPot() +" $.");
+				dealer.getActivePlayers().get(0).addMoney(dealer.removePot());
 				return false;
 			}
 			currentPlayer++;
+		}
+		
+		for (Player p : players) {
+			dealer.addPot(p.removeBet());
 		}
 		return true;
 	}
@@ -206,8 +220,7 @@ public class TexasHoldem extends JFrame {
 	}
 	
 	private void fold() {
-		dealer.removeActivePlayer(players.get(0));
-		players.get(0).fold();
+		players.get(0).fold(this);
 		repaint();
 		userAction = true;
 	}
@@ -226,5 +239,9 @@ public class TexasHoldem extends JFrame {
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 		}
+	}
+	
+	public Dealer getDealer() {
+		return this.dealer;
 	}
 }

@@ -180,6 +180,7 @@ public abstract class Player {
 	 */
 	public void addMoney(int profit) {
 		this.money += profit;
+		cashLabel.setText(String.format("%d $", money));
 	}
 	
 	/**
@@ -192,15 +193,15 @@ public abstract class Player {
 	}
 	
 	/**
-	 * Returns the varible myBet.
+	 * Returns the varible bet.
 	 * 
-	 * @return myBet The varible myBet.
+	 * @return myBet The varible bet.
 	 */
 	public int getBet() {
 		return this.bet;
 	}
 	
-	public int takeBet() {
+	public int removeBet() {
 		int ret = bet;
 		bet = 0;
 		betLabel.setText(String.format("Current bet: %d $", bet));
@@ -242,10 +243,13 @@ public abstract class Player {
 	 * @throws IllegalArgumentException If the user tries to bet more money than he or she has. 
 	 */
 	public boolean bet(int amount) throws IllegalArgumentException {
+		if (amount < 0) {
+			throw new IllegalArgumentException ("You can't bet a negative amount.");
+		}
 		if (amount > this.money) {
 			throw new IllegalArgumentException ("You can't bet more money than you have.");
 		}
-		bet += amount;
+		this.bet += amount;
 		this.money -= amount;
 		cashLabel.setText(String.format("%d $", money));
 		betLabel.setText(String.format("Current bet: %d $", bet));
@@ -257,7 +261,8 @@ public abstract class Player {
 	 * 
 	 * @return false Indicates the the player wants to fold.
 	 */
-	public boolean fold() {
+	public boolean fold(TexasHoldem gui) {
+		gui.getDealer().getActivePlayers().remove(this);
 		this.removeCards();
 		return false;
 	}
