@@ -7,14 +7,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public abstract class Player {
-	private String name;
-	private int ID;
-	private int money;
-	private int bet;
-	private Card[] hand;
-	private boolean isActive;
+	protected String name;
+	protected int ID;
+	protected int money;
+	protected int bet;
+	protected Card[] hand;
+	public static final int STARTMONEY = 100;
 
-	private GamePanel gamePanel;
+	protected GamePanel gamePanel;
 	private int x;
 	private int y;
 	private JLabel cardLabel1;
@@ -33,10 +33,9 @@ public abstract class Player {
 
 		this.name = name;
 		this.ID = ID;
-		this.money = 100;
+		this.money = STARTMONEY;
 		this.gamePanel = gamePanel;
 		this.hand = new Card[2];
-		this.isActive = true;
 
 		BufferedImage chairImg = null;
 		String chairImgPath = "../res/orange_circle.png";
@@ -108,7 +107,7 @@ public abstract class Player {
 		gamePanel.setPosition(betLabel, 0);
 	}
 	
-	public abstract boolean act(int currentBet);
+	public abstract void act(TexasHoldem gui);
 
 	public void giveCard(Card card) {
 		if (hand[0] == null) {
@@ -226,10 +225,12 @@ public abstract class Player {
 	 */
 	public boolean call(int currentBet) throws IllegalArgumentException {
 		if (currentBet - bet > this.money) {
-			throw new IllegalArgumentException ("You can't bet more maney than you have.");
+			throw new IllegalArgumentException ("You can't bet more money than you have.");
 		}
-		this.money -= currentBet + bet;
+		this.money -= currentBet - bet;
 		this.bet = currentBet;
+		cashLabel.setText(String.format("%d $", money));
+		betLabel.setText(String.format("Current bet: %d $", bet));
 		return true;
 	}
 	
@@ -241,8 +242,8 @@ public abstract class Player {
 	 * @throws IllegalArgumentException If the user tries to bet more money than he or she has. 
 	 */
 	public boolean bet(int amount) throws IllegalArgumentException {
-		if (bet > this.money) {
-			throw new IllegalArgumentException ("You can't bet more maney than you have.");
+		if (amount > this.money) {
+			throw new IllegalArgumentException ("You can't bet more money than you have.");
 		}
 		bet += amount;
 		this.money -= amount;
@@ -258,7 +259,6 @@ public abstract class Player {
 	 */
 	public boolean fold() {
 		this.removeCards();
-		this.isActive = false;
 		return false;
 	}
 }

@@ -12,8 +12,8 @@ public class AI extends Player {
 
 	
 	@Override
-	public boolean act(int currentBet) {
-		// TODO Auto-generated method stub
-		return true;
+	public void act(TexasHoldem gui) {
+		TexasHoldem.delay(500);
+		this.call(gui.getCurrentBet());
 	}
 }

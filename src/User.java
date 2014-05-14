@@ -11,8 +11,7 @@ public class User extends Player {
 	}
 
 	@Override
-	public boolean act(int currentBet) {
-		
-		return true;
+	public void act(TexasHoldem gui) {
+		gui.userAction();
 	}
 }

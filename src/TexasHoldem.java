@@ -1,5 +1,8 @@
 import java.util.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.*;
 
 public class TexasHoldem extends JFrame {
@@ -11,6 +14,9 @@ public class TexasHoldem extends JFrame {
 	private ArrayList<CommunitySlot> communityCards;
 	private Dealer dealer;
 	public static final long DELAY = 200;
+	private boolean userAction;
+	private int currentBet;
+	private int currentBetPlayer;
 
 	public static void main(String[] args) {
 		new TexasHoldem();
@@ -19,6 +25,7 @@ public class TexasHoldem extends JFrame {
 	public TexasHoldem() {
 		super("Texas Holdem");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setPreferredSize(new Dimension(1271, 800));
 		contentPane = getContentPane();
 
 		gameScreen = new GameScreen();
@@ -36,9 +43,12 @@ public class TexasHoldem extends JFrame {
 
 		contentPane.add(gameScreen);
 
+		createUserButtons();
+		
 		pack();
 		setVisible(true);
-
+		
+		this.userAction = false;
 		newGame();
 	}
 
@@ -64,50 +74,148 @@ public class TexasHoldem extends JFrame {
 
 			players.get((dealerID + 2) % 8).bet(bigBlind);
 			delay(500);
-
+			currentBet = bigBlind;
+			currentBetPlayer = (dealerID + 2) % 8;
+			
 			dealer.dealCards();
 
-			/*if (bettingRound(dealerID + 3)) {
+			if (!bettingRound(dealerID + 3)) {
+				dealer.removeBoard();
 				continue;
-			}*/
+			}
 
 			dealer.dealTheFlop();
 
-			/*if (bettingRound(dealerID + 1)) {
+			if (!bettingRound(dealerID + 1)) {
+				dealer.removeBoard();
 				continue;
-			}*/
+			}
 
 			dealer.dealTheTurn();
 
-			/*if (bettingRound(dealerID + 1)) {
+			if (!bettingRound(dealerID + 1)) {
+				dealer.removeBoard();
 				continue;
-			}*/
+			}
 
 			dealer.dealTheRiver();
 
-			/*if (bettingRound(dealerID + 1)) {
+			if (!bettingRound(dealerID + 1)) {
+				dealer.removeBoard();
 				continue;
-			}*/
+			}
 
 			//showdown();
 			dealer.removeBoard();
 		}
 	}
 
-/*	private void dealHands(Deck deck) {
-		for (int i = 0; i < 2; i++) {
-			for (Player p : players) {
-				p.giveCard(deck.drawCard());
-				delay(500);
+	private boolean bettingRound(int firstPlayer) {
+		int currentPlayer = firstPlayer;
+		boolean finished = false;
+		
+		while (!finished) {
+			currentPlayer = currentPlayer % dealer.getActivePlayers().size();
+			dealer.getActivePlayers().get(currentPlayer).act(this);
+			if (currentBet == dealer.getActivePlayers().get(currentPlayer).getBet() &&
+				currentPlayer + 1 % dealer.getActivePlayers().size() == currentBetPlayer) {
+				return true;
+			} else if (currentBet < dealer.getActivePlayers().get(currentPlayer).getBet()) {
+				currentBet = dealer.getActivePlayers().get(currentPlayer).getBet();
+				currentBetPlayer = currentPlayer;
 			}
+			
+			if (dealer.getActivePlayers().size() == 1) {
+				return false;
+			}
+			currentPlayer++;
 		}
+		return true;
+	}
+	
+	private void createUserButtons() {
+		
+        gameScreen.getCheckButton().addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) { check(); }
+        });
+        
+        gameScreen.getCallButton().addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) { call(); }
+        });
+        
+        gameScreen.getBetButton().addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) { bet(); }
+        });
+        
+        gameScreen.getRaiseButton().addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) { bet(); }
+        });
+        
+        gameScreen.getFoldButton().addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) { fold(); }
+        });
+	}
+	
+	public void userAction() {
+		if (currentBet == 0) {
+			gameScreen.showButtons(false);
+		} else {
+			gameScreen.showButtons(true);
+		}
+		
+		pack();
+		repaint();
+		
+		userAction = false;
+		while (!userAction) {
+			delay(1);
+		}
+		
+		gameScreen.hideButtons();
+	}
+	
+	private void check() {
+		userAction = true;
+	}
+	
+	private void call() {
+		players.get(0).call(currentBet);
+		userAction = true;
 	}
 
-	private void dealCommunity(int index) {
-		communityCards.add(new CommunitySlot(index, deck.drawCard(), gameScreen.getGamePanel()));
-		delay(500);
-	}*/
-
+	private void bet() {
+		int bet;
+		
+		while (true) {
+			try {
+				bet = Integer.parseInt(JOptionPane.showInputDialog(this, "Enter your bet:"));
+			} catch (NumberFormatException e) {
+				JOptionPane.showMessageDialog(this, "You must enter a valid number!");
+				continue;
+			}
+			
+			try {
+				players.get(0).bet(bet);
+			} catch (IllegalArgumentException e) {
+				JOptionPane.showMessageDialog(this, e.getMessage());
+				continue;
+			}
+			break;
+		}
+		userAction = true;
+	}
+	
+	private void fold() {
+		dealer.removeActivePlayer(players.get(0));
+		players.get(0).fold();
+		repaint();
+		userAction = true;
+	}
+	
+	public int getCurrentBet() {
+		return this.currentBet;
+	}
+	
 	/**
 	 * 
 	 * @param time
