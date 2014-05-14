@@ -80,7 +80,7 @@ public class Deck {
 		String deckString = "";
 		while (!deck.empty()) {
 			deckString += deck.pop() + "\n";
-;		}
+		}
 		return deckString;
 	}
 }

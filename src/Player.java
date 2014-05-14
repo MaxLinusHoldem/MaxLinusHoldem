@@ -3,13 +3,16 @@ import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
 import javax.imageio.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
-public class Player {
+public abstract class Player {
 	private String name;
 	private int ID;
-	private double cash;
-	private double bet;
+	private int money;
+	private int bet;
 	private Card[] hand;
+	private boolean isActive;
 
 	private GamePanel gamePanel;
 	private int x;
@@ -30,9 +33,10 @@ public class Player {
 
 		this.name = name;
 		this.ID = ID;
-		cash = 100.0;
+		this.money = 100;
 		this.gamePanel = gamePanel;
-		hand = new Card[2];
+		this.hand = new Card[2];
+		this.isActive = true;
 
 		BufferedImage chairImg = null;
 		String chairImgPath = "../res/orange_circle.png";
@@ -87,7 +91,7 @@ public class Player {
 		gamePanel.add(nameLabel);
 		gamePanel.setPosition(nameLabel, 0);
 
-		cashLabel = new JLabel(String.format("%.2f $", cash), SwingConstants.CENTER);
+		cashLabel = new JLabel(String.format("%d $", money), SwingConstants.CENTER);
 		cashLabel.setBounds(x, y + 175, 216, 11);
 		cashLabel.setBackground(new Color(0x9F, 0x4F, 0x00));
 		cashLabel.setOpaque(true);
@@ -95,7 +99,7 @@ public class Player {
 		gamePanel.add(cashLabel);
 		gamePanel.setPosition(cashLabel, 0);
 
-		betLabel = new JLabel(String.format("Current bet: %.2f $", bet), SwingConstants.CENTER);
+		betLabel = new JLabel(String.format("Current bet: %d $", bet), SwingConstants.CENTER);
 		betLabel.setBounds(x, y + 190, 216, 11);
 		betLabel.setBackground(new Color(0x9F, 0x4F, 0x00));
 		betLabel.setOpaque(true);
@@ -103,6 +107,8 @@ public class Player {
 		gamePanel.add(betLabel);
 		gamePanel.setPosition(betLabel, 0);
 	}
+	
+	public abstract boolean act(int currentBet);
 
 	public void giveCard(Card card) {
 		if (hand[0] == null) {
@@ -141,33 +147,118 @@ public class Player {
 		}
 	}
 
+	/**
+	 * Gets the name of the person.
+	 * 
+	 * @return name The name of the person.
+	 */
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
+	/**
+	 * Gets the ID number of the player.
+	 * 
+	 * @return ID The ID of the player.
+	 */
 	public int getID() {
-		return ID;
+		return this.ID;
 	}
 
-	public double getCash() {
-		return cash;
+	/**
+	 * Returns the players current money balance.
+	 * 
+	 * @return cash The players current money balance.
+	 */
+	public int getMoney() {
+		return this.money;
 	}
 
-	public double getBet() {
-		return bet;
+	/**
+	 * Adds money to the players money balance.
+	 * 
+	 * @param profit The money to be added.
+	 */
+	public void addMoney(int profit) {
+		this.money += profit;
 	}
-
-	public void bet(double amount) {
-		bet += amount;
-		cash -= amount;
-		cashLabel.setText(String.format("%.2f $", cash));
-		betLabel.setText(String.format("Current bet: %.2f $", bet));
+	
+	/**
+	 * Returns the player's cards.
+	 * 
+	 * @return The player's cards.
+	 */
+	public ArrayList<Card> getCards() {
+		return new ArrayList<Card>(Arrays.asList(hand));
 	}
-
-	public double takeBet() {
-		double ret = bet;
-		bet = 0.0;
-		betLabel.setText(String.format("Current bet: %.2f $", bet));
+	
+	/**
+	 * Returns the varible myBet.
+	 * 
+	 * @return myBet The varible myBet.
+	 */
+	public int getBet() {
+		return this.bet;
+	}
+	
+	public int takeBet() {
+		int ret = bet;
+		bet = 0;
+		betLabel.setText(String.format("Current bet: %d $", bet));
 		return ret;
+	}
+	
+	/**
+	 * Lets the player cecked.
+	 * 
+	 * @return true Indicates that the play made no bet.
+	 */
+	public boolean check() {
+		return true;
+	}
+	
+	/**
+	 * Lets the player call the current bet in the game.
+	 * 
+	 * @param currentBet The current bet in the game.
+	 * @return true Indicates that the player is still in the game.
+	 * @throws IllegalArgumentException If the user tries to bet more money than he or she has. 
+	 */
+	public boolean call(int currentBet) throws IllegalArgumentException {
+		if (currentBet - bet > this.money) {
+			throw new IllegalArgumentException ("You can't bet more maney than you have.");
+		}
+		this.money -= currentBet + bet;
+		this.bet = currentBet;
+		return true;
+	}
+	
+	/**
+	 * Lets the player bet in the game.
+	 * 
+	 * @param bet The cash to be bet.
+	 * @return true Indicates that the player is still in the game.
+	 * @throws IllegalArgumentException If the user tries to bet more money than he or she has. 
+	 */
+	public boolean bet(int amount) throws IllegalArgumentException {
+		if (bet > this.money) {
+			throw new IllegalArgumentException ("You can't bet more maney than you have.");
+		}
+		bet += amount;
+		this.money -= amount;
+		cashLabel.setText(String.format("%d $", money));
+		betLabel.setText(String.format("Current bet: %d $", bet));
+		return true;
+	}
+	
+	/**
+	 * Lets the player fold the game.
+	 * 
+	 * @return false Indicates the the player wants to fold.
+	 */
+	public boolean fold() {
+		this.removeCards();
+		this.isActive = false;
+		return false;
 	}
 }

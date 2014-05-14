@@ -7,7 +7,7 @@ public class CommunitySlot extends JLabel {
 	Card card;
 	GamePanel gamePanel;
 
-	public CommunitySlot(int index, Card card, GamePanel gamePanel) {
+	public CommunitySlot(Card card, int index, GamePanel gamePanel) {
 		if (index < 0 || index > 4) {
 			throw new IllegalArgumentException("error: Community card index must be within the range of [0, 4] (inclusive).");
 		} else if (card == null) {
@@ -39,5 +39,9 @@ public class CommunitySlot extends JLabel {
 		repaint();
 		gamePanel.add(this);
 		gamePanel.setPosition(this, 0);
+	}
+	
+	public Card getCard() {
+		return this.card;
 	}
 }

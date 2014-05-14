@@ -3,14 +3,14 @@ import java.awt.*;
 import javax.swing.*;
 
 public class TexasHoldem extends JFrame {
-	private final double smallBlind = 5.0;
-	private final double bigBlind = 10.0;
+	private int smallBlind = 1;
+	private int bigBlind = 2;
 	private Container contentPane;
 	private GameScreen gameScreen;
 	private ArrayList<Player> players;
 	private ArrayList<CommunitySlot> communityCards;
-	private Deck deck;
-	private double pot;
+	private Dealer dealer;
+	public static final long DELAY = 200;
 
 	public static void main(String[] args) {
 		new TexasHoldem();
@@ -44,14 +44,9 @@ public class TexasHoldem extends JFrame {
 
 	private void newGame() {
 		int dealerID = -1;
-		pot = 0.0;
 
 		while (true) {
 			dealerID++;
-
-			for (CommunitySlot cs : communityCards) {
-				gameScreen.getGamePanel().remove(cs);
-			}
 
 			communityCards.clear();
 
@@ -59,7 +54,7 @@ public class TexasHoldem extends JFrame {
 				p.removeCards();
 			}
 
-			deck = new Deck();
+			dealer = new Dealer(players, gameScreen.getGamePanel());
 			gameScreen.getGamePanel().setDealerAndBlinds(dealerID);
 
 			repaint();
@@ -70,37 +65,36 @@ public class TexasHoldem extends JFrame {
 			players.get((dealerID + 2) % 8).bet(bigBlind);
 			delay(500);
 
-			dealHands(deck);
+			dealer.dealCards();
 
 			/*if (bettingRound(dealerID + 3)) {
 				continue;
 			}*/
 
-			dealCommunity(0);
-			dealCommunity(1);
-			dealCommunity(2);
+			dealer.dealTheFlop();
 
 			/*if (bettingRound(dealerID + 1)) {
 				continue;
 			}*/
 
-			dealCommunity(3);
+			dealer.dealTheTurn();
 
 			/*if (bettingRound(dealerID + 1)) {
 				continue;
 			}*/
 
-			dealCommunity(4);
+			dealer.dealTheRiver();
 
 			/*if (bettingRound(dealerID + 1)) {
 				continue;
 			}*/
 
 			//showdown();
+			dealer.removeBoard();
 		}
 	}
 
-	private void dealHands(Deck deck) {
+/*	private void dealHands(Deck deck) {
 		for (int i = 0; i < 2; i++) {
 			for (Player p : players) {
 				p.giveCard(deck.drawCard());
@@ -112,9 +106,13 @@ public class TexasHoldem extends JFrame {
 	private void dealCommunity(int index) {
 		communityCards.add(new CommunitySlot(index, deck.drawCard(), gameScreen.getGamePanel()));
 		delay(500);
-	}
+	}*/
 
-	private void delay(long time) {
+	/**
+	 * 
+	 * @param time
+	 */
+	public static void delay(long time) {
 		try {
 			Thread.sleep(time);
 		} catch (InterruptedException e) {
