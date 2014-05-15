@@ -291,6 +291,7 @@ public abstract class Player {
 	public boolean fold(TexasHoldem gui) {
 		gui.getDealer().getActivePlayers().remove(this);
 		this.removeCards();
+		gui.repaint();
 		return false;
 	}
 	
@@ -309,6 +310,10 @@ public abstract class Player {
 		this.money -= TexasHoldem.SMALLBLIND;
 		cashLabel.setText(String.format("%d $", money));
 		betLabel.setText(String.format("Current bet: %d $", bet));
+	}
+	
+	public boolean isAllIn() {
+		return isAllIn;
 	}
 	
 	public void setIsAllIn(boolean isAllIn) {

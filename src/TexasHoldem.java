@@ -199,26 +199,25 @@ public class TexasHoldem extends JFrame {
 
 		while (!finished) {
 			currentPlayer = currentPlayer % dealer.getActivePlayers().size();
-			//DEBUG
 			int lastSize = dealer.getActivePlayers().size();
 			dealer.getActivePlayers().get(currentPlayer).act(this);
-			if (lastSize > dealer.getActivePlayers().size()) {
-				continue;
+			if (!(lastSize > dealer.getActivePlayers().size())) {
+				int newCurrentBet = dealer.getActivePlayers().get(currentPlayer).isAllIn() ?
+						        currentBet : dealer.getActivePlayers().get(currentPlayer).getBet();
+				
+				if (currentBet == newCurrentBet
+						&& (currentPlayer + 1) % dealer.getActivePlayers().size() == currentBetPlayer) {
+					finished = true;
+				} else if (currentBet < newCurrentBet) {
+					currentRaise = dealer.getActivePlayers().get(currentPlayer)
+							.getBet()
+							- currentBet;
+					currentBet = dealer.getActivePlayers().get(currentPlayer)
+							.getBet();
+					currentBetPlayer = currentPlayer;
+				}
 			}
-			if (currentBet == dealer.getActivePlayers().get(currentPlayer)
-					.getBet()
-					&& (currentPlayer + 1) % dealer.getActivePlayers().size() == currentBetPlayer) {
-				finished = true;
-			} else if (currentBet < dealer.getActivePlayers()
-					.get(currentPlayer).getBet()) {
-				currentRaise = dealer.getActivePlayers().get(currentPlayer)
-						.getBet()
-						- currentBet;
-				currentBet = dealer.getActivePlayers().get(currentPlayer)
-						.getBet();
-				currentBetPlayer = currentPlayer;
-			}
-
+			
 			if (dealer.getActivePlayers().size() == 1) {
 				for (Player p : players) {
 					dealer.addPot(p.removeBet());
@@ -384,7 +383,6 @@ public class TexasHoldem extends JFrame {
 	 */
 	private void fold() {
 		players.get(0).fold(this);
-		repaint();
 		userAction = true;
 	}
 
