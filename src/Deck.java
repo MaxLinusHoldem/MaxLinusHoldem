@@ -4,28 +4,28 @@ import java.util.Random;
 import java.util.EmptyStackException;
 
 /**
- * The class Deck.
- * This class creates and shuffles a deck with cards.
+ * The class Deck. This class creates and shuffles a deck with cards.
  * 
  * @author Linus Wåreus
- * @version 2014.05.05
+ * @version 2014.05.15
  */
 public class Deck {
 	private Stack<Card> deck; // The shuffled deck.
 	private ArrayList<Card> sortedDeck; // The sorted deck.
+	// A random generator that generates a random number.
 	private Random randomGenerator;
-	
+
 	/**
 	 * Default constructor of the class Deck.
 	 */
 	public Deck() {
-		deck = new Stack<Card>();
-		sortedDeck = new ArrayList<Card>();
-		randomGenerator = new Random();
+		this.deck = new Stack<Card>();
+		this.sortedDeck = new ArrayList<Card>();
+		this.randomGenerator = new Random();
 		createDeck();
 		shuffleDeck();
 	}
-	
+
 	/**
 	 * Creates new a sorted deck.
 	 */
@@ -41,16 +41,17 @@ public class Deck {
 			}
 		}
 	}
-	
+
 	/**
 	 * Shuffles the deck.
 	 */
 	public void shuffleDeck() {
 		while (!sortedDeck.isEmpty()) {
-			deck.push(sortedDeck.remove(randomGenerator.nextInt(sortedDeck.size())));
+			deck.push(sortedDeck.remove(randomGenerator.nextInt(sortedDeck
+					.size())));
 		}
 	}
-	
+
 	/**
 	 * Draws a card from the the top of the deck.
 	 * 
@@ -60,16 +61,16 @@ public class Deck {
 	public Card drawCard() throws EmptyStackException {
 		return deck.pop();
 	}
-	
+
 	/**
 	 * Returns true if the deck is empty, false otherwise.
 	 * 
 	 * @param true if the deck is empty, false otherwise.
 	 */
 	public boolean empty() {
-		return deck.empty();
+		return this.deck.empty();
 	}
-	
+
 	/**
 	 * Produces a string with all the cards in the deck.
 	 * 

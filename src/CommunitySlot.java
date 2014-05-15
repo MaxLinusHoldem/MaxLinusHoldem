@@ -1,6 +1,8 @@
 import java.awt.image.*;
+
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class CommunitySlot extends JLabel {
 	int x;
 	int y;

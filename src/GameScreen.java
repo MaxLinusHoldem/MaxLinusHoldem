@@ -1,7 +1,9 @@
 import java.awt.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
 
+@SuppressWarnings("serial")
 public class GameScreen extends JPanel {
 	private JMenuBar menubar;
 	private GamePanel gamePanel;
@@ -12,6 +14,9 @@ public class GameScreen extends JPanel {
 	private JButton raiseButton;
 	private JButton foldButton;
 	private JButton allInButton;
+	private JMenuItem newItem;
+	private JMenuItem quitItem;
+	private JMenuItem aboutItem;
 
 	public GameScreen() {
 		setLayout(new BorderLayout());
@@ -60,13 +65,11 @@ public class GameScreen extends JPanel {
 		JMenu fileMenu = new JMenu("File");
 		JMenu helpMenu = new JMenu("Help");
 
-		JMenuItem newItem = new JMenuItem("New Game");
-		JMenuItem exitItem = new JMenuItem("Exit Game");
-		JMenuItem quitItem = new JMenuItem("Quit Game");
-		JMenuItem aboutItem = new JMenuItem("About");
+		newItem = new JMenuItem("New Game");
+		quitItem = new JMenuItem("Quit Game");
+		aboutItem = new JMenuItem("About");
 
 		fileMenu.add(newItem);
-		fileMenu.add(exitItem);
 		fileMenu.add(quitItem);
 		helpMenu.add(aboutItem);
 
@@ -104,5 +107,17 @@ public class GameScreen extends JPanel {
 	
 	public JButton getAllInButton() {
 		return allInButton;
+	}
+	
+	public JMenuItem getNewGameItem() {
+		return newItem;
+	}
+	
+	public JMenuItem getQuitItem() {
+		return quitItem;
+	}
+	
+	public JMenuItem getAboutItem() {
+		return aboutItem;
 	}
 }

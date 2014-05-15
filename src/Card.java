@@ -6,8 +6,8 @@ import javax.imageio.*;
  * The class Card.
  * This class creates a playing card.
  * 
- * @author Linus Wåreus
- * @version 2014.05.05
+ * @author Linus Wåreus & Max Wällstedt
+ * @version 2014.05.15
  */
 public class Card implements Comparable<Card> {
 	private int value; // The cards value.
@@ -31,7 +31,7 @@ public class Card implements Comparable<Card> {
 	 * 									suit isn't CLUBS, DIAMONDS, HEARTS or SPADES.
 	 */
 	public Card(int value, String suit) throws IllegalArgumentException {
-		if (value < 2 || value > 14) {
+		if(value < 2 || value > 14) {
 			throw new IllegalArgumentException ("Value must be between 2 and 14.");
 		}
 		if (suit != CLUBS && suit != DIAMONDS && suit != HEARTS && suit != SPADES) {
@@ -112,8 +112,13 @@ public class Card implements Comparable<Card> {
 		return this.image;
 	}
 
+	/**
+	 * Returns the back image of the card.
+	 * 
+	 * @return backImage The back image of the card.
+	 */
 	public BufferedImage getBackImage() {
-		return backImage;
+		return this.backImage;
 	}
 	
 	/**
@@ -123,15 +128,16 @@ public class Card implements Comparable<Card> {
 	 */
 	@Override
 	public String toString() {
-		return rank + " of " + suit;
+		return this.rank + " of " + this.suit;
 	}
-	
+
 	/**
 	 * Compares two cards values to each other.
 	 * 
 	 * @param card The card to compare this card to.
-	 * @return A negative integer, zero, or a positive integer as this cards value
-	 * 		   is less than, equal to, or greater than the specified cards value. 
+	 * @return A negative integer, zero, or a positive integer as this cards
+	 *         value is less than, equal to, or greater than the specified cards
+	 *         value.
 	 */
 	@Override
 	public int compareTo(Card card) {

@@ -1,9 +1,11 @@
 import java.io.*;
 import java.awt.*;
 import java.awt.image.*;
+
 import javax.swing.*;
 import javax.imageio.*;
 
+@SuppressWarnings("serial")
 public class GamePanel extends JLayeredPane {
 	private BufferedImage tableImg;
 	private BufferedImage dealerImg;
@@ -12,7 +14,6 @@ public class GamePanel extends JLayeredPane {
 	private JLabel dealerLabel;
 	private JLabel smallBlindLabel;
 	private JLabel bigBlindLabel;
-	private JLabel potLabel;
 
 	public GamePanel() {
 		setLayout(null);

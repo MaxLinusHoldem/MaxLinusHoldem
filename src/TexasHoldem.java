@@ -1,10 +1,10 @@
 import java.util.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 import javax.swing.*;
 
+@SuppressWarnings("serial")
 public class TexasHoldem extends JFrame {
 	public static final int BIGBLIND = 2;
 	public static final int SMALLBLIND = BIGBLIND / 2;
@@ -18,13 +18,14 @@ public class TexasHoldem extends JFrame {
 	private int currentRaise;
 	private int currentBet;
 	private int currentBetPlayer;
+	private final int SHORTCUT_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
 	public static void main(String[] args) {
 		new TexasHoldem();
 	}
 
 	public TexasHoldem() {
-		super("Texas Holdem");
+		super("MaxLinus Hold'em");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setPreferredSize(new Dimension(1271, 800));
 		contentPane = getContentPane();
@@ -32,6 +33,8 @@ public class TexasHoldem extends JFrame {
 		gameScreen = new GameScreen();
 		contentPane.add(gameScreen);
 		setJMenuBar(gameScreen.getJMenuBar());
+		
+		createMenuItems();
 
 		players = new ArrayList<Player>();
 		communityCards = new ArrayList<CommunitySlot>();
@@ -57,10 +60,10 @@ public class TexasHoldem extends JFrame {
 		setVisible(true);
 		
 		this.userAction = false;
-		newGame();
+		play();
 	}
 
-	private void newGame() {
+	private void play() {
 		int dealerID = -1;
 
 		while (true) {
@@ -174,6 +177,24 @@ public class TexasHoldem extends JFrame {
 		return true;
 	}
 	
+	private void createMenuItems() {
+		gameScreen.getNewGameItem().addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) { newGame(); }
+        });
+		gameScreen.getNewGameItem().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, SHORTCUT_MASK));
+        
+        gameScreen.getQuitItem().addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) { System.exit(0); }
+        });
+        gameScreen.getQuitItem().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, SHORTCUT_MASK));
+        
+        gameScreen.getAboutItem().addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) { about(); }
+        });
+        gameScreen.getAboutItem().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, SHORTCUT_MASK));
+		
+	}
+	
 	private void createUserButtons() {
 		
         gameScreen.getCheckButton().addActionListener(new ActionListener() {
@@ -274,6 +295,15 @@ public class TexasHoldem extends JFrame {
 	public int getCurrentRaise() {
 		return this.currentRaise;
 	}
+	
+	public Dealer getDealer() {
+		return this.dealer;
+	}
+	
+	public void newGame() {
+
+	}
+	
 	/**
 	 * 
 	 * @param time
@@ -286,7 +316,10 @@ public class TexasHoldem extends JFrame {
 		}
 	}
 	
-	public Dealer getDealer() {
-		return this.dealer;
+	private void about() {
+		JOptionPane.showMessageDialog(this,
+		                              "MaxLinusHold'em\nVersion 1.0",
+		                              "About MaxLinusHoldem",
+		                              JOptionPane.INFORMATION_MESSAGE);
 	}
 }
