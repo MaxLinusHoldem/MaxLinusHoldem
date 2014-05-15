@@ -7,3 +7,8 @@
 
 # vim temporary files #
 *.swp
+
+# latex files #
+*.aux
+*.log
+*.pdf
