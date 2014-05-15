@@ -1,0 +1,271 @@
+\documentclass[10pt,twoside,a4paper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[swedish]{babel}
+
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhead{}
+\fancyfoot{}
+
+\fancyhead[L]{Linus Wåreus\\Max Wällstedt\\DD1339 Introduktion till datalogi\\\textbf{Projekt}}
+\fancyhead[R]{Grupp 3\\2013/05/15\\}
+
+\setlength{\headheight}{47pt}
+
+\begin{document}
+\section*{Slutrapport}
+
+\subsection*{Programbeskrivning}
+
+\subsubsection*{Del A}
+
+I vårt projekt har vi tänkt göra ett pokerspel. Planen är helt enkelt att
+utveckla ett program där man kan spela poker, närmare bestämt Texas Hold
+’em no-limit. Programmet ska i ett första skede bestå av en klient där man
+kan köra en spelare mot datorn, som kan vara flera spelare samtidigt.
+Programmet ska då visa upp en grafisk spelplan där man kan se motståndarna,
+jackpotten och ens egna kort och marker. När man sedan spelar spelet ska
+det sedan vara som att spela Texas Hold ’em i verkligheten. Man skall kunna
+se sina kort, kunna göra insatser, checka, syna och folda. Användaren
+kommer då med andra ord ha diverse val huruvida denne skall satsa ens
+marker. I Texas Hold’em kan man inte påverka ens kort på något sätt så de
+enda knappvalen som kommer behöva finnas är relaterade till hur man satsar
+ens marker. Följande knappar bör då finnas, checka, göra en insats, syna en
+insats, göra en reraise och folda. När användaren lägger en insats eller
+gör en reraise så ska denne även kunna bestämma hur mycket denna insats
+skall vara.
+
+I ett nästa steg av programmet vill vi även utveckla en möjlighet att spela
+flera spelare genom att göra ett LAN-spel. Då ska helt enkelt en
+server-version av programmet köras på en dator och sedan skall spelare
+kunna ansluta till servern för att kunna spela flera spelare. Man ska även
+i denna version kunna ha med dator-spelare i spelet. Denna version kommer
+alltså att se ut precis som den tidigare versionen, med undantag att flera
+spelare skall kunna delta i ett spel över flera datorer. Vår plan är helt
+enkelt att utveckla spelet i två steg, en offline-version och en
+online-version. Vi kommer att börja med att utveckla offline-version, dock
+kommer den vara förberedd för att göras om till en online-version. Vi är
+inte helt säkra på att vi kommer att lyckas att utveckla en online-version,
+dock så kommer offline-version att räcka för att vara ett färdigt program
+att presentera. Online-version en kan alltså ses som ett extra arbete som
+vi kommer försöka att utveckla i mån av tid och om det inte är allt för
+svårt.
+
+\subsection*{Användarbeskrivning}
+
+\subsubsection*{Del A}
+
+Nästa fråga är då vem som kommer att använda vårt program. Vi har tänkt oss
+att man som spelare måste ha förkunskaper om hur man spelar Texas Hold ’em
+för att kunna spela vårt spel. Man kommer dock kunna spela spelet utan
+dessa förkunskaper, men man kommer då behöva lära sig spelet efter hand man
+spelar det. Vår utgångspunkt är dock att alla som spelar vårt spel vet sen
+innan vet hur Texas Hold ’em går till. Däremot tänker vi oss att spelaren
+inte behöver vara en särskilt van datoranvändare för att kunna spela
+spelet. Menyval och andra knappar skall vara så pass intuitiva så att även
+en relativt ovan datoranvändare skall kunna spela spelet, så länge denne
+vet hur Texas Hold ’em går till. Användaren bör ändå ha en viss datorvana
+för att kunna spela, den vanan behöver dock inte vara särskilt stor. Vad
+det gäller ålder på spelaren så ska det i vårt fall inte spela någon roll,
+så länge som sagt spelaren vet hur man spelar Texas Hold ’em. Man kan då
+dock göra ett antagande om att spelaren åtminstone är över 10 år, då yngre
+barn förmodligen inte vet hur man spelar poker. Så programmet ska med andra
+ord kunna spelas av tio åringar och någon övre åldersgräns finns inte. Vår
+huvudsakliga målgrupp kommer dock vara vuxna personer, fast spelet skall
+ändå kunna spelas av barn äldre en tio år.
+
+\subsection*{Användarscenarier}
+
+\subsubsection*{Del A}
+
+Scenario 1:
+
+\vspace{1em}
+\noindent
+Karl, 20 år är en van datoranvändare och är också väl insatt i hur man
+spelar Texas Hold ’em. Karl börjar med att starta spelet, han ser direkt
+att en knapp där det står start nytt spel. Han matar in sitt namn och även
+hur många motståndare han vill spela emot, han väljer maximalt antal.
+Spelet startar och dealern blandar kortleken och delar ut korten. Karl är
+lilla mörker och satsar då automatiskt 5 dollar. Spelet börjar och två
+spelare väljer att folda och resten av de datorstyrda spelarna väljer att
+syna den stora mörkern på 10 dollar. När det blir Karls tur ser han att han
+fått ruter knekt och spader kung. Han väljer att också syna den stora
+mörkern och spelet försätter med att dealern delar ut de tre första
+gemensamma korten, floppen. Den visar spader tio, hjärter ess och ruter
+två. Det är Karls tur igen att börja, eftersom han bara saknar en dam för
+att få en stege så väljer han att göra en insats. På skärmen framför sig
+ser han knapparna Check, Raise och Fold. Han klickar på Raise. Då dyker ett
+nytt alternativ upp med en ruta där det står 5 dollar och sedan en nedåtpil
+till vänster om rutan och en uppåtpil till höger om rutan. Han kan inte
+klicka på nedåtpilen eftersom att 5 dollar är minsta insatsen. Det finns
+även en knapp där det står ”All-in” som betyder att man satsar alla ens
+marker. Karl väljer dock att trycka på uppåtpilen tills det står 20 dollar
+och sedan klickar på Raise-knappen igen. Spelet fortsätter och alla utom
+två spelare foldar, de andra två synar Karls insats. Dealern delar sedan ut
+det fjärde kortet, spader 4. Karl väljer denna gång att bara checka. Dock
+så höjer en av de andra spelarna insatsen med 20 dollar. När det blir Karls
+tur igen så har han tre alternativ på skärmen, Call, Reraise och Fold. Han
+väljer call vilket gör att han satsar den summan som krävs för att spelet
+skall gå vidare, alltså 20 dollar. Sedan delar dealern ut det sista och
+avgörande kortet, the river som visar sig vara spader dam. Detta betyder
+att Karl har en steg. Han börjar den sista omgången och återigen höjer han
+med 20 dollar. Denna gång foldar en av de andra spelarna och den andre
+synar hans insats. Karl börjar med att visa hans kort och spelet
+presenterar att han har en stege. Sedan visas datorns kort, denne hade ett
+tvåpar i tvåor och damer. Detta gör att Karl vinner och på skärmen står det
+”Karl wins” och även hur mycket han vann. Karl känner sig nöjd efter detta
+och väljer att avsluta spelet genom att klicka ”Exit” från menyn i toppen
+av spelfönstret varpå spelet avslutas.
+
+\vspace{1em}
+\noindent
+Scenario 2:
+
+\vspace{1em}
+\noindent
+Bertil, 55 år är inte en jättevan datoranvändare, men han vet hur man
+spelar Texas Hold ’em. Han börjar med att starta spelet och möts av en
+välkomstskärm som presenterar spelet. Han ser tre val, Single player,
+Mulitplayer och Exit. Han väljer multiplayer. Han möts sedan av valen Host
+game och Join game. Han väljer Join game. Han blir då uppmanad att mata in
+sitt namn och sedan finns det en ruta som visar alla spel som finns i det
+lokala nätverket. Det finns även en ruta till höger där man kan mata in
+IP-numret till en spelserver. Han ser att det finns ett lokalt spel i den
+ena rutan och klickar på den och sedan på knappen ”Join”. Spelet laddar och
+på skärmen står det ”Awaiting opponents”. Efter att ha väntat cirka 30
+sekunder startar spelet. I spelet finns fyra motståndare till Bertil.
+Spelet startar och dealern delar ut korten. Bertil får en spader två och en
+hjärter sju. Bertil är den tredje spelaren att satsa och väljer att möta
+den stora mörkern på 10 dollar. Alla spelare är kvar i spelet och dealer
+delar ut floppen. Floppen gav inte Bertil några bra möjligheter och han
+sitter inte på något. Den första spelaren väljer att höja med 50 dollar och
+när det blir Bertils tur så är valet självklart. På hans skärm ser han sina
+kort, hur mycket marker hand har och även alternativen, Call, Reraise och
+Fold. Bertil väljer att folda och spelet fortsätter utan honom. Efter det
+att omgången är klar flyttas dealerbrickan och en ny spelomgång tar vid.
+Bertil tycket inte det var roligt att spela mot andra riktiga spelare så
+han vill hellre spel mot datorn. I menyn i toppen av fönstret väljer därför
+Bertil valet ”Disconnect from server”. När han klickar där kommer han
+tillbaka till huvudmeny och välkomstskärmen. Där väljer han istället valet
+”Single player” och startar upp ett nytt spel mot datorn.
+
+\subsection*{Testplan}
+
+\subsubsection*{Del A}
+
+Användartestning kommer att ske då vi har en tillräckligt fungerande
+prototyp. När vi har detta tänker vi finna lämpligt antal personer som vi
+kan observera när de använder programmet. Detta personer bör kunna spela
+Texas Hold 'em för att få vettig data ur observationen.
+
+Vi bör inte ge ledning åt användarna under testningen, utan låta dem fritt
+utforska gränssnittet. Det viktigaste att observera är om gränssnittet
+intuitivt kan användas så att det inte påverkar spelupplevelsen.
+
+Exakt när vi utför användartestning kan vi inte säga nu. Vi kan dock säga
+att eftersom multiplayervarianten är lite osäker om den blir av så kommer
+vi förmodligen inte få tillfälle i alla fall att användartesta den. Det är
+bättre att snabbt kunna användartesta singleplayervarianten och få relevant
+feedback så vi kan bygga ett bra gränssnitt mot spelet. Detta gränssnitt
+kommer även att användas i multiplayervarianten, så all testning kommer att
+vara användbar även här.
+
+Självklart ska alla publika metoder i klasser som inte involverar grafiken
+enhetstestas så tidigt som möjligt. Ideellt skrivs enhetstester samtidigt
+som klasserna implementeras.
+
+\subsubsection*{Del B}
+
+Linus skrev testklasser till Deck och Evaluate, och allt grafiskt testades
+manuellt med hjälp av utskrifter i terminalen och dialogfönster.
+
+I användartestningen frågade vi oberoende slumpvis valt folk att testa
+spelet. Vi presenterade kort spelet och bad dem att ''tänka högt'' under
+spelomgången. Den respons vi fick var framför allt på de buggar som vi inte
+hade fixat än eller funktioner som inte var fullt implementerade än. I
+övrigt verkade det som att de tyckte att spelet var roligt och snyggt.
+
+\subsection*{Programdesign}
+
+Klasstrukturen i den här typen av spel är ganska självklar i många
+avseenden. Exempelvis behövs klasser för kort, användare och även statiska
+klasser som att evaluera spelarnas händer och bestämma vinnare. Spelet i
+sig bör även finnas i en klass som håller koll på turordning och sköter
+varje spelares interaktion med själva spelet, som att tilldela spelare kort
+i början av en ny runda och hålla koll på vad varje spelare satsar.
+
+Grafiken bör vara i sina egna klasser i den mån det går för att hålla
+programstrukturen modulär. Gränssnittsbyggande klassen bör även vara den
+klass som innehåller main-metoden.
+
+I en eventuell multiplayervariant hoppas vi att programstrukturen kan vara
+nästan identisk med singelplayervarianten. Serverhosting och
+nätverkskommunikation får ske i sin klass, och under spelet kommer
+värddatorn köra spelklassen som håller koll på spelarnas interaktion med
+spelet. Lokalt på klientdatorerna kommer framför allt grafiken ritas. Alla
+datorer som är anslutna till spelet kommer därför regelbundet behöva få
+information om vad som har hänt i spelet.
+
+\subsection*{Tekniska frågor}
+
+Tekniska frågor i första stadiet handlar mest om hur vi ska göra
+gränssnittet och få detta att kommunicera med spelet. Det mesta vad gäller
+själva spelet är ganska straight forward och bara att börja jobba på. Mer
+specifik än så är svår att vara i detta skede.
+
+I en eventuell multiplayervariant finns dock större tekniska frågor, dock
+även här ganska allmänna eftersom vi inte har så mycket erfarenhet inom
+detta område, så det är även här svårt att vara särskilt specifik. När vi
+har kommit igång med kodandet kommer tekniska frågor bli mer konkreta och
+aktuella.
+
+\subsection*{Arbetsplan}
+
+I vårt projekt planerar vi att dela upp arbetet jämnt mellan varandra. När
+vi sedan kommit överens om vilka olika delar vi kommer programmera av
+programmet så kommer vi att arbeta relativt självständig. Vi kommer dock
+med jämna mellanrum att stämma av varandra och ha möten för att synka
+arbetsgången. Vi kommer också självfallet att ge varandra den kod man har
+kodat så fort den är klar, så att den andra personen kan använda den koden
+för att gå vidare i projektet. Vi hade tänkt dela upp programmet i två
+delar, själva spelmotorn och sedan det grafiska. Uppdelningen av arbetet
+kommer sedan att bli så att vi kodar lika mycket var på båda dessa delar,
+så att inte bara en person gör till exempel den grafiska delen. Exakt hur
+denna uppdelning kommer att ske är inte helt klart, men kommer att ske
+under arbetets gång.
+
+Till att börja med har vi tänkt göra en prototyp där bara en spelare kan
+spela mot datorn. Denna prototyp skall dock vara ganska komplett på så sätt
+att den kommer ha ett färdigt grafiskt gränssnitt. När sedan denna version
+är klar så tänkte vi, i mån av tid, att utveckla programmet så att man kan
+spela flera spelare över det lokala nätverket. Vi kan dock inte i nuläget
+säga att denna version kommer att lyckas då vi båda inte har några
+erfarenheter när det gäller att koda Java-program som har
+nätverksfunktioner. Vi kommer dock att försöka ta till oss den
+informationen som krävs för att vi skall lyckas med detta och
+förhoppningsvis som kommer vi lyckas med att göra en
+multiplayerimplementation.
+
+Vad gäller tidsplanen för projektet så är det första som skall lämnas in
+detta dokument fredag den 2 maj. Vi hade även tänkt att till dess börja
+koda lite smått på programmet. Den första muntliga lägesrapporten kommer
+Max presentera och den andra Linus. Vad det gäller den sista lägesrapporten
+har vi inte kommit överens om vem som skall presentera den. När det sedan
+kommer till programmeringsbiten så hade vi tänkt börja starta ordentlig
+andra veckan. Tills övningen på fredag den 9 maj så har vi som mål att ha
+en första spelbar prototyp. Kanske inte en helt fullständigt sådan, men
+gärna så fullständig som möjlig. Denna prototyp bör också ha något form av
+grafiskt gränssnitt, så vi måste med andra ord börja med det grafiska den
+veckan också. Den sista veckan hade vi tänkt finputsa prototypen och även
+starta med att koda multiplayerläget, om detta inte redan gjorts. Sista
+veckan skall vi även skriva rapporten som skall lämnas in och även göra
+användartesterna som tillhör. Allt detta bör göras tidigt den tredje veckan
+så att man har onsdagen och torsdagen till att göra finjusteringar på
+spelet och se till så att allt är klart för inlämning. Sedan skall allt
+lämnas in den sista övningen fredag den 16 maj.
+
+\end{document}
