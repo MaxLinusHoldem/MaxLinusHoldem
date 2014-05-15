@@ -14,6 +14,7 @@ public class Evaluate {
 	private List<Card> allCards; // All community cards plus the players cards.
 	private List<Card> hand; // The players hand.
 	private String result; // The type of hand represented by a string.
+	private int[] handIndex;
 
 	// The hands represented by a string.
 	public static final String STRAIGHTFLUSH = "Straight Flush";
@@ -44,6 +45,7 @@ public class Evaluate {
 		this.hand = new ArrayList<Card>();
 		this.allCards.addAll(playerCards);
 		this.allCards.addAll(board);
+		this.handIndex = new int[6];
 	}
 
 	/**
@@ -63,41 +65,42 @@ public class Evaluate {
 	 *         		<li>0 = Nothing</li>
 	 *         </ul>
 	 */
-	public int testHand() {
+	public int[] testHand() {
 		if (straightFlush(allCards)) {
 			result = STRAIGHTFLUSH;
-			return 8;
+			return handIndex;
 		}
 		if (fourOfAKind(allCards)) {
 			result = FOUROFAKIND;
-			return 7;
+			return handIndex;
 		}
 		if (fullHouse(allCards)) {
 			result = FULLHOUSE;
-			return 6;
+			return handIndex;
 		}
 		if (flush(allCards)) {
 			result = FLUSH;
-			return 5;
+			return handIndex;
 		}
 		if (straight(allCards)) {
 			result = STRAIGHT;
-			return 4;
+			return handIndex;
 		}
 		if (threeOfAKind(allCards)) {
 			result = THREEOFAKIND;
-			return 3;
+			return handIndex;
 		}
 		if (twoPairs(allCards)) {
 			result = TWOPAIRS;
-			return 2;
+			return handIndex;
 		}
 		if (onePair(allCards)) {
 			result = ONEPAIR;
-			return 1;
+			return handIndex;
 		}
+		nothing(allCards);
 		result = NOTHING;
-		return 0;
+		return handIndex;
 	}
 
 	/**
@@ -108,7 +111,12 @@ public class Evaluate {
 	 */
 	private boolean straightFlush(List<Card> cards) {
 		if (flush(cards)) {
-			return straight(hand);
+			if (straight(hand)) {
+				handIndex = new int[2];
+				handIndex[0] = 8;
+				handIndex[1] = hand.get(4).getValue();
+				return true;
+			}
 		}
 		return false;
 	}
@@ -132,6 +140,11 @@ public class Evaluate {
 									hand.add(cards.get(j));
 									hand.add(cards.get(k));
 									hand.add(cards.get(l));
+									handIndex = new int[3];
+									handIndex[0] = 7;
+									handIndex[1] = hand.get(0).getValue();
+									int[] tempHandIndex = kicker(cards);
+									handIndex[2] = tempHandIndex[0];
 									return true;
 								}
 							}
@@ -157,6 +170,10 @@ public class Evaluate {
 
 			if (onePair(temp)) {
 				hand.addAll(threeOfAKind);
+				handIndex = new int[3];
+				handIndex[0] = 6;
+				handIndex[1] = hand.get(2).getValue();
+				handIndex[2] = hand.get(0).getValue();
 				return true;
 			}
 		}
@@ -185,6 +202,13 @@ public class Evaluate {
 			}
 			if (flush.size() >= 5) {
 				hand = flush;
+				handIndex = new int[6];
+				handIndex[0] = 5;
+				Collections.sort(hand);
+				Collections.reverse(hand);
+				for (int j = 0; j < handIndex.length - 1; j++) {
+					handIndex[j + 1] = hand.get(j).getValue();
+				}
 				return true;
 			}
 		}
@@ -218,6 +242,9 @@ public class Evaluate {
 
 		if (straight.size() == 5) {
 			hand = straight;
+			handIndex = new int[2];
+			handIndex[0] = 4;
+			handIndex[1] = hand.get(4).getValue();
 			return true;
 		}
 		return false;
@@ -248,16 +275,22 @@ public class Evaluate {
 				}
 			}
 		}
-		if (threeOfAKind.size() == 1) {
-			hand = new ArrayList<Card>(threeOfAKind.get(0));
-			return true;
-		} else if (threeOfAKind.size() == 2) {
-			if (threeOfAKind.get(0).get(0).getValue() > threeOfAKind.get(1)
-					.get(0).getValue()) {
+		if (threeOfAKind.size() != 0) {
+			if (threeOfAKind.size() == 1) {
 				hand = new ArrayList<Card>(threeOfAKind.get(0));
-			} else {
-				hand = new ArrayList<Card>(threeOfAKind.get(1));
+			} else if (threeOfAKind.size() == 2) {
+				if (threeOfAKind.get(0).get(0).getValue() > threeOfAKind.get(1).get(0).getValue()) {
+					hand = new ArrayList<Card>(threeOfAKind.get(0));
+				} else {
+					hand = new ArrayList<Card>(threeOfAKind.get(1));
+				}
 			}
+			handIndex = new int[4];
+			handIndex[0] = 3;
+			handIndex[1] = hand.get(0).getValue();
+			int[] tempHandIndex = kicker(cards);
+			handIndex[2] = tempHandIndex[0];
+			handIndex[3] = tempHandIndex[1];
 			return true;
 		}
 		return false;
@@ -277,6 +310,12 @@ public class Evaluate {
 
 			if (onePair(temp)) {
 				hand.addAll(pair);
+				handIndex = new int[4];
+				handIndex[0] = 2;
+				handIndex[1] = hand.get(2).getValue();
+				handIndex[2] = hand.get(0).getValue();
+				int[] tempHandIndex = kicker(cards);
+				handIndex[3] = tempHandIndex[0];
 				return true;
 			}
 		}
@@ -307,18 +346,67 @@ public class Evaluate {
 		if (pairs.size() != 0) {
 			int max = 0;
 			for (int i = 1; i < pairs.size(); i++) {
-				if (pairs.get(i).get(0).getValue() > pairs.get(max).get(0)
-						.getValue()) {
+				if (pairs.get(i).get(0).getValue() > pairs.get(max).get(0).getValue()) {
 					max = i;
 				}
 			}
 			hand = new ArrayList<Card>();
 			hand.addAll(pairs.get(max));
+			
+			handIndex = new int[5];
+			handIndex[0] = 1;
+			handIndex[1] = hand.get(0).getValue();
+			int[] tempHandIndex = kicker(cards);
+			
+			if (tempHandIndex.length >= 3) {
+				handIndex[2] = tempHandIndex[0];
+				handIndex[3] = tempHandIndex[1];
+				handIndex[4] = tempHandIndex[2];
+				}
 			return true;
 		}
 		return false;
 	}
-
+	
+	/**
+	 * Takes out the five highest cards if the player
+	 * has got nothing.
+	 * 
+	 * @param cards The cards to be tested.
+	 * @return true Indicates that the cards was nothing.
+	 */
+	private boolean nothing(List<Card> cards) {
+		ArrayList<Card> temp = new ArrayList<Card>(cards);
+		handIndex = new int[6];
+		handIndex[0] = 0;
+		int [] tempHandIndex = kicker(temp);
+		for (int i = 0; i < tempHandIndex.length; i++) {
+			handIndex[i + 1] = tempHandIndex[i];
+			if (i == 4) {
+				break;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * Takes out all the kickers from the cards.
+	 * 
+	 * @param cards The cards to be tested.
+	 * @return kickers An array with all the kickers.
+	 */
+	private int[] kicker(List<Card> cards) {
+		ArrayList<Card> temp = new ArrayList<Card>(cards);
+		temp.removeAll(hand);
+		Collections.sort(temp);
+		Collections.reverse(temp);
+		int[] kickers = new int[temp.size()];
+		for (int i = 0; i < kickers.length; i++) {
+			kickers[i] = temp.get(i).getValue();
+		}
+		return kickers;
+	}
+	
 	/**
 	 * Returns the player's hand.
 	 * 

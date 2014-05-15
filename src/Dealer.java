@@ -1,8 +1,8 @@
 import java.awt.Color;
 import java.util.ArrayList;
-
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import java.util.Arrays;
 
 /**
  * The class Dealer. This class acts as the dealer of the game.
@@ -174,7 +174,7 @@ public class Dealer {
 	 */
 	public Player selectWinner() {
 		Player bestPlayer = null;
-		int bestHand = 0;
+		int[] bestHand = new int[6];
 		for (int i = 0; i < activePlayers.size(); i++) {
 			TexasHoldem.delay(500);
 			activePlayers.get(i).showCards();
@@ -184,11 +184,17 @@ public class Dealer {
 			}
 			Evaluate hand = new Evaluate(activePlayers.get(i).getCards(), cards);
 			activePlayers.get(i).setWinningHand(hand);
-			int temp = hand.testHand();
-			if (temp > bestHand) {
-				bestPlayer = activePlayers.get(i);
-				bestHand = temp;
+			int[] temp = hand.testHand();
+			for (int j = 0; j < temp.length; j++) {
+				if (temp[j] > bestHand[j]) {
+					bestPlayer = activePlayers.get(i);
+					bestHand = temp;
+					break;
+				} else if (temp[j] < bestHand[j]) {
+					break;
+				}
 			}
+			System.out.println(activePlayers.get(i).getName() + " : " + hand + " : " + Arrays.toString(temp));
 		}
 		bestPlayer.addMoney(this.getPot());
 		return bestPlayer;
