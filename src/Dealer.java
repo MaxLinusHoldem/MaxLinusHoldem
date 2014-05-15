@@ -194,7 +194,6 @@ public class Dealer {
 					break;
 				}
 			}
-			System.out.println(activePlayers.get(i).getName() + " : " + hand + " : " + Arrays.toString(temp));
 		}
 		bestPlayer.addMoney(this.getPot());
 		return bestPlayer;

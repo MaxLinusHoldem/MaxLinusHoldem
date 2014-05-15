@@ -26,20 +26,12 @@ public class AI extends Player {
 			try {
 				bet(20, gui.getCurrentRaise());
 			} catch (IllegalArgumentException e) {
-				try {
-					call(gui.getCurrentBet());
-				} catch (IllegalArgumentException ex) {
-					allIn();
-				}
+				call(gui.getCurrentBet());
 			}
 		} else if (randomGenerator.nextInt(10) < 2) {
 			fold(gui);
 		} else {
-			try {
-				call(gui.getCurrentBet());
-			} catch (IllegalArgumentException e) {
-				allIn();
-			}
+			call(gui.getCurrentBet());
 		}
 	}
 }

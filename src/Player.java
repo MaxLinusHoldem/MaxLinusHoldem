@@ -202,9 +202,9 @@ public abstract class Player {
 	}
 	
 	/**
-	 * Returns the varible bet.
+	 * Returns the variable bet.
 	 * 
-	 * @return myBet The varible bet.
+	 * @return myBet The variable bet.
 	 */
 	public int getBet() {
 		return this.bet;
@@ -225,46 +225,40 @@ public abstract class Player {
 		return this.winningHand;
 	}
 	/**
-	 * Lets the player cecked.
-	 * 
-	 * @return true Indicates that the play made no bet.
+	 * Lets the player check.
 	 */
-	public boolean check() {
-		return true;
+	public void check() {
 	}
 	
 	/**
 	 * Lets the player call the current bet in the game.
 	 * 
 	 * @param currentBet The current bet in the game.
-	 * @return true Indicates that the player is still in the game.
-	 * @throws IllegalArgumentException If the user tries to bet more money than he or she has. 
 	 */
-	public boolean call(int currentBet) throws IllegalArgumentException {
-		if (currentBet - bet > this.money) {
-			throw new IllegalArgumentException ("You can't bet more money than you have.");
+	public void call(int currentBet) {
+		if (currentBet - bet >= this.money) {
+			allIn();
+			return;
 		}
 		this.money -= currentBet - bet;
 		this.bet = currentBet;
 		cashLabel.setText(String.format("%d $", money));
 		betLabel.setText(String.format("Current bet: %d $", bet));
-		return true;
 	}
 	
 	/**
 	 * Lets the player bet in the game.
 	 * 
 	 * @param bet The cash to be bet.
-	 * @return true Indicates that the player is still in the game.
 	 * @throws IllegalArgumentException If the user tries to bet more money than he or she has. 
 	 */
-	public boolean bet(int amount, int currentRaise) throws IllegalArgumentException {
+	public void bet(int amount, int currentRaise) throws IllegalArgumentException {
 		if (amount < 0) {
 			throw new IllegalArgumentException ("You can't bet a negative amount.");
 		}
 		if (amount == this.money) {
 			allIn();
-			return true;
+			return;
 		}
 		if (amount < TexasHoldem.BIGBLIND) {
 			throw new IllegalArgumentException ("You can't bet less than the big blind.");
@@ -280,29 +274,24 @@ public abstract class Player {
 		this.money -= amount;
 		cashLabel.setText(String.format("%d $", money));
 		betLabel.setText(String.format("Current bet: %d $", bet));
-		return true;
 	}
 	
 	/**
 	 * Lets the player fold the game.
-	 * 
-	 * @return false Indicates the the player wants to fold.
 	 */
-	public boolean fold(TexasHoldem gui) {
+	public void fold(TexasHoldem gui) {
 		gui.getDealer().getActivePlayers().remove(this);
 		this.removeCards();
 		gui.repaint();
-		return false;
 	}
 	
 
-	public boolean allIn() {
+	public void allIn() {
 		isAllIn = true;
 		this.bet += this.money;
 		this.money = 0;
 		cashLabel.setText(String.format("%d $", money));
 		betLabel.setText(String.format("Current bet: %d $", bet));
-		return true;
 	}
 	
 	public void betSmallBlind() {
@@ -310,6 +299,10 @@ public abstract class Player {
 		this.money -= TexasHoldem.SMALLBLIND;
 		cashLabel.setText(String.format("%d $", money));
 		betLabel.setText(String.format("Current bet: %d $", bet));
+		
+		if (this.money == 0) {
+			this.isAllIn = true;
+		}
 	}
 	
 	public boolean isAllIn() {
