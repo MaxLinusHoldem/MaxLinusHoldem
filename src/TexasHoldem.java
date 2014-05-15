@@ -90,6 +90,7 @@ public class TexasHoldem extends JFrame {
 
 			for (Player p : players) {
 				p.removeCards();
+				p.setIsAllIn(false);
 			}
 
 			dealer = new Dealer(players, gameScreen.getGamePanel());

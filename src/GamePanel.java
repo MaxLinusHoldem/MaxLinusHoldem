@@ -91,7 +91,8 @@ public class GamePanel extends JLayeredPane {
 	 *            The list of players that can be dealer or blinds.
 	 */
 	public void setDealerAndBlinds(int dealerID, ArrayList<Player> players) {
-		int horizontalDistance = 294;
+		//int horizontalDistance = 294;
+		int horizontalDistance = 310;
 		int horizontalDistanceLong = 424;
 
 		int verticalDistance = 214;

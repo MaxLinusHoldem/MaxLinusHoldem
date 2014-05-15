@@ -310,4 +310,8 @@ public abstract class Player {
 		cashLabel.setText(String.format("%d $", money));
 		betLabel.setText(String.format("Current bet: %d $", bet));
 	}
+	
+	public void setIsAllIn(boolean isAllIn) {
+		this.isAllIn = isAllIn;
+	}
 }
