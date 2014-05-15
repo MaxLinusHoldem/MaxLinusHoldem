@@ -1,8 +1,13 @@
 import java.awt.*;
-
 import javax.swing.*;
 import javax.swing.border.*;
 
+/**
+ * The screen that holds all graphical swing components, like the buttons and
+ * the menu bar.
+ * 
+ * @author Max Wällstedt
+ */
 @SuppressWarnings("serial")
 public class GameScreen extends JPanel {
 	private JMenuBar menubar;
@@ -18,6 +23,9 @@ public class GameScreen extends JPanel {
 	private JMenuItem quitItem;
 	private JMenuItem aboutItem;
 
+	/**
+	 * Creates the GameScreen.
+	 */
 	public GameScreen() {
 		setLayout(new BorderLayout());
 		gamePanel = new GamePanel();
@@ -37,6 +45,12 @@ public class GameScreen extends JPanel {
 		makeMenuBar();
 	}
 
+	/**
+	 * Displays the action buttons that the user will use to determine their
+	 * action.
+	 * 
+	 * @param facingBet
+	 */
 	public void showButtons(boolean facingBet) {
 		buttonPanel.removeAll();
 
@@ -54,11 +68,17 @@ public class GameScreen extends JPanel {
 		add(buttonPanel, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * Hides the action buttons.
+	 */
 	public void hideButtons() {
 		buttonPanel.removeAll();
 		buttonPanel.repaint();
 	}
 
+	/**
+	 * Creates the menu bar and its contents.
+	 */
 	private void makeMenuBar() {
 		menubar = new JMenuBar();
 
@@ -77,6 +97,11 @@ public class GameScreen extends JPanel {
 		menubar.add(helpMenu);
 	}
 
+	/**
+	 * Returns the game panel
+	 * 
+	 * @return
+	 */
 	public GamePanel getGamePanel() {
 		return gamePanel;
 	}
@@ -104,19 +129,19 @@ public class GameScreen extends JPanel {
 	public JMenuBar getJMenuBar() {
 		return menubar;
 	}
-	
+
 	public JButton getAllInButton() {
 		return allInButton;
 	}
-	
+
 	public JMenuItem getNewGameItem() {
 		return newItem;
 	}
-	
+
 	public JMenuItem getQuitItem() {
 		return quitItem;
 	}
-	
+
 	public JMenuItem getAboutItem() {
 		return aboutItem;
 	}

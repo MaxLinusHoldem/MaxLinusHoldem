@@ -1,9 +1,13 @@
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
 
+/**
+ * The main window of the game.
+ * 
+ * @author Max Wällstedt, Linus Wåreus
+ */
 @SuppressWarnings("serial")
 public class TexasHoldem extends JFrame {
 	public static final int BIGBLIND = 2;
@@ -18,12 +22,22 @@ public class TexasHoldem extends JFrame {
 	private int currentRaise;
 	private int currentBet;
 	private int currentBetPlayer;
-	private final int SHORTCUT_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
+	private final int SHORTCUT_MASK = Toolkit.getDefaultToolkit()
+			.getMenuShortcutKeyMask();
 
+	/**
+	 * The main method that will make a new TexasHoldem object.
+	 * 
+	 * @param args
+	 *            The command-line arguments. Will be ignored in the game.
+	 */
 	public static void main(String[] args) {
 		new TexasHoldem();
 	}
 
+	/**
+	 * Creates the main window of the game.
+	 */
 	public TexasHoldem() {
 		super("MaxLinus Hold'em");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -33,7 +47,7 @@ public class TexasHoldem extends JFrame {
 		gameScreen = new GameScreen();
 		contentPane.add(gameScreen);
 		setJMenuBar(gameScreen.getJMenuBar());
-		
+
 		createMenuItems();
 
 		players = new ArrayList<Player>();
@@ -43,7 +57,7 @@ public class TexasHoldem extends JFrame {
 		while (name.isEmpty()) {
 			name = JOptionPane.showInputDialog(this, "Enter your name:");
 			if (name == null) {
-				System.exit(0);	
+				System.exit(0);
 			}
 		}
 		players.add(new User(name, 0, gameScreen.getGamePanel()));
@@ -55,14 +69,17 @@ public class TexasHoldem extends JFrame {
 		contentPane.add(gameScreen);
 
 		createUserButtons();
-		
+
 		pack();
 		setVisible(true);
-		
+
 		this.userAction = false;
 		play();
 	}
 
+	/**
+	 * Start the main loop of the game.
+	 */
 	private void play() {
 		int dealerID = -1;
 
@@ -76,40 +93,59 @@ public class TexasHoldem extends JFrame {
 			}
 
 			dealer = new Dealer(players, gameScreen.getGamePanel());
-			gameScreen.getGamePanel().setDealerAndBlinds(dealerID);
+			gameScreen.getGamePanel().setDealerAndBlinds(dealerID, players);
 
 			repaint();
 
-			players.get((dealerID + 1) % players.size()).betSmallBlind();
-			delay(500);
+			if (players.size() == 2) {
+				players.get(dealerID % players.size()).betSmallBlind();
+				delay(500);
 
-			players.get((dealerID + 2) % players.size()).bet(BIGBLIND, 0);
-			delay(500);
+				players.get((dealerID + 1) % players.size()).bet(BIGBLIND, 0);
+				delay(500);
+
+				currentBetPlayer = (dealerID + 1) % players.size();
+			} else {
+				players.get((dealerID + 1) % players.size()).betSmallBlind();
+				delay(500);
+
+				players.get((dealerID + 2) % players.size()).bet(BIGBLIND, 0);
+				delay(500);
+
+				currentBetPlayer = (dealerID + 2) % players.size();
+			}
 			currentBet = BIGBLIND;
 			currentRaise = BIGBLIND;
-			currentBetPlayer = (dealerID + 2) % players.size();
-			
+
 			dealer.dealCards();
 
-			if (!bettingRound(dealerID + 3)) {
-				dealer.removeBoard();
-				continue;
+			if (players.size() == 2) {
+				if (!bettingRound(dealerID % dealer.getActivePlayers().size())) {
+					dealer.removeBoard();
+					continue;
+				}
+			} else {
+				if (!bettingRound((dealerID + 3) % dealer.getActivePlayers().size())) {
+					dealer.removeBoard();
+					continue;
+				}
 			}
 
 			dealer.dealTheFlop();
-			
+
 			currentBet = 0;
 			currentRaise = 0;
-			if (!bettingRound(dealerID + 1)) {
+
+			if (!bettingRound((dealerID + 1) % dealer.getActivePlayers().size())) {
 				dealer.removeBoard();
 				continue;
 			}
-			
+
 			currentBet = 0;
 			currentRaise = 0;
 			dealer.dealTheTurn();
 
-			if (!bettingRound(dealerID + 1)) {
+			if (!bettingRound((dealerID + 1) % dealer.getActivePlayers().size())) {
 				dealer.removeBoard();
 				continue;
 			}
@@ -118,143 +154,207 @@ public class TexasHoldem extends JFrame {
 			currentRaise = 0;
 			dealer.dealTheRiver();
 
-			if (!bettingRound(dealerID + 1)) {
+			if (!bettingRound((dealerID + 1) % dealer.getActivePlayers().size())) {
 				dealer.removeBoard();
 				continue;
 			}
 
 			Player temp = dealer.selectWinner();
-			JOptionPane.showMessageDialog(this, temp.getName() + " won " + dealer.getPot() +" $ with a " + temp.getWinningHand());
+			JOptionPane.showMessageDialog(this, temp.getName() + " won "
+					+ dealer.getPot() + " $ with a " + temp.getWinningHand());
 			dealer.removePot();
 			dealer.removeBoard();
-			
+
 			for (int i = 0; i < players.size(); i++) {
 				if (players.get(i).getMoney() == 0) {
 					players.get(i).removeCards();
-					JOptionPane.showMessageDialog(this, players.get(i).getName() + " lost the game!");
+					JOptionPane.showMessageDialog(this, players.get(i)
+							.getName() + " lost the game!");
 					players.remove(i);
 					i--;
 				}
 			}
 			if (players.size() == 1) {
-				JOptionPane.showMessageDialog(this, players.get(0).getName() + " won the game and " + players.get(0).getMoney() +" $.\nCongratulations!");
+				JOptionPane.showMessageDialog(this, players.get(0).getName()
+						+ " won the game and " + players.get(0).getMoney()
+						+ " $.\nCongratulations!");
 				System.exit(0);
 			}
 		}
 	}
 
+	/**
+	 * Starts a betting round.
+	 * 
+	 * @param firstPlayer
+	 *            The player that start the betting round.
+	 * @return true if the game is to go on and false if everyone but one player
+	 *         folds.
+	 */
 	private boolean bettingRound(int firstPlayer) {
 		int currentPlayer = firstPlayer;
 		currentBetPlayer = currentPlayer;
 		boolean finished = false;
-		
+
 		while (!finished) {
 			currentPlayer = currentPlayer % dealer.getActivePlayers().size();
+			//DEBUG
+			int lastSize = dealer.getActivePlayers().size();
 			dealer.getActivePlayers().get(currentPlayer).act(this);
-			if (currentBet == dealer.getActivePlayers().get(currentPlayer).getBet() &&
-			   (currentPlayer + 1) % dealer.getActivePlayers().size() == currentBetPlayer) {
+			if (lastSize > dealer.getActivePlayers().size()) {
+				continue;
+			}
+			if (currentBet == dealer.getActivePlayers().get(currentPlayer)
+					.getBet()
+					&& (currentPlayer + 1) % dealer.getActivePlayers().size() == currentBetPlayer) {
 				finished = true;
-			} else if (currentBet < dealer.getActivePlayers().get(currentPlayer).getBet()) {
-				currentRaise = dealer.getActivePlayers().get(currentPlayer).getBet() - currentBet;
-				currentBet = dealer.getActivePlayers().get(currentPlayer).getBet();
+			} else if (currentBet < dealer.getActivePlayers()
+					.get(currentPlayer).getBet()) {
+				currentRaise = dealer.getActivePlayers().get(currentPlayer)
+						.getBet()
+						- currentBet;
+				currentBet = dealer.getActivePlayers().get(currentPlayer)
+						.getBet();
 				currentBetPlayer = currentPlayer;
 			}
-			
+
 			if (dealer.getActivePlayers().size() == 1) {
 				for (Player p : players) {
 					dealer.addPot(p.removeBet());
 				}
-				JOptionPane.showMessageDialog(this, dealer.getActivePlayers().get(0).getName() + " won " + dealer.getPot() +" $.");
+				JOptionPane.showMessageDialog(this, dealer.getActivePlayers()
+						.get(0).getName()
+						+ " won " + dealer.getPot() + " $.");
 				dealer.getActivePlayers().get(0).addMoney(dealer.removePot());
 				return false;
 			}
 			currentPlayer++;
 		}
-		
+
 		for (int i = 0; i < players.size(); i++) {
 			dealer.addPot(players.get(i).removeBet());
 		}
 		return true;
 	}
-	
+
+	/**
+	 * Adds action listeners to the JMenuItems in the menu bar.
+	 */
 	private void createMenuItems() {
 		gameScreen.getNewGameItem().addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) { newGame(); }
-        });
-		gameScreen.getNewGameItem().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, SHORTCUT_MASK));
-        
-        gameScreen.getQuitItem().addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) { System.exit(0); }
-        });
-        gameScreen.getQuitItem().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, SHORTCUT_MASK));
-        
-        gameScreen.getAboutItem().addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) { about(); }
-        });
-        gameScreen.getAboutItem().setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, SHORTCUT_MASK));
-		
+			public void actionPerformed(ActionEvent e) {
+				newGame();
+			}
+		});
+		gameScreen.getNewGameItem().setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_N, SHORTCUT_MASK));
+
+		gameScreen.getQuitItem().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
+		gameScreen.getQuitItem().setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_Q, SHORTCUT_MASK));
+
+		gameScreen.getAboutItem().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				about();
+			}
+		});
+		gameScreen.getAboutItem().setAccelerator(
+				KeyStroke.getKeyStroke(KeyEvent.VK_A, SHORTCUT_MASK));
+
 	}
-	
+
+	/**
+	 * Adds action listeners to the action buttons.
+	 */
 	private void createUserButtons() {
-		
-        gameScreen.getCheckButton().addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) { check(); }
-        });
-        
-        gameScreen.getCallButton().addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) { call(); }
-        });
-        
-        gameScreen.getBetButton().addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) { bet(); }
-        });
-        
-        gameScreen.getRaiseButton().addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) { bet(); }
-        });
-        
-        gameScreen.getFoldButton().addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) { fold(); }
-        });
-        
-        gameScreen.getAllInButton().addActionListener(new ActionListener() {
-        	public void actionPerformed(ActionEvent e) { allIn(); }
-        });
+
+		gameScreen.getCheckButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				check();
+			}
+		});
+
+		gameScreen.getCallButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				call();
+			}
+		});
+
+		gameScreen.getBetButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				bet();
+			}
+		});
+
+		gameScreen.getRaiseButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				bet();
+			}
+		});
+
+		gameScreen.getFoldButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				fold();
+			}
+		});
+
+		gameScreen.getAllInButton().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				allIn();
+			}
+		});
 	}
-	
+
+	/**
+	 * Prompts the user for an action.
+	 */
 	public void userAction() {
 		if (currentBet == 0) {
 			gameScreen.showButtons(false);
 		} else {
 			gameScreen.showButtons(true);
 		}
-		
+
 		pack();
 		repaint();
-		
+
 		userAction = false;
 		while (!userAction) {
 			delay(1);
 		}
-		
+
 		gameScreen.hideButtons();
 	}
-	
+
+	/**
+	 * The action "check".
+	 */
 	private void check() {
 		userAction = true;
 	}
-	
+
+	/**
+	 * The action "call".
+	 */
 	private void call() {
 		players.get(0).call(currentBet);
 		userAction = true;
 	}
 
+	/**
+	 * The action "bet".
+	 */
 	private void bet() {
 		int bet;
-		
+
 		while (true) {
 			try {
-				String betStr = JOptionPane.showInputDialog(this, "Enter your bet:");
+				String betStr = JOptionPane.showInputDialog(this,
+						"Enter your bet:");
 
 				if (betStr == null) {
 					return;
@@ -262,10 +362,11 @@ public class TexasHoldem extends JFrame {
 
 				bet = Integer.parseInt(betStr);
 			} catch (NumberFormatException e) {
-				JOptionPane.showMessageDialog(this, "You must enter a valid number!");
+				JOptionPane.showMessageDialog(this,
+						"You must enter a valid number!");
 				continue;
 			}
-			
+
 			try {
 				players.get(0).bet(bet, currentRaise);
 			} catch (IllegalArgumentException e) {
@@ -276,37 +377,63 @@ public class TexasHoldem extends JFrame {
 		}
 		userAction = true;
 	}
-	
+
+	/**
+	 * The action "fold".
+	 */
 	private void fold() {
 		players.get(0).fold(this);
 		repaint();
 		userAction = true;
 	}
-	
+
+	/**
+	 * The action "all-in".
+	 */
 	private void allIn() {
 		players.get(0).allIn();
 		userAction = true;
 	}
-	
+
+	/**
+	 * Returns the current bet of the game.
+	 * 
+	 * @return The current bet of the game.
+	 */
 	public int getCurrentBet() {
 		return this.currentBet;
 	}
-	
+
+	/**
+	 * Returns the current raise of the game.
+	 * 
+	 * @return The current raise of the game.
+	 */
 	public int getCurrentRaise() {
 		return this.currentRaise;
 	}
-	
+
+	/**
+	 * Returns the dealer of the game.
+	 * 
+	 * @return The dealer of the game.
+	 */
 	public Dealer getDealer() {
 		return this.dealer;
 	}
-	
-	public void newGame() {
 
-	}
-	
 	/**
+	 * Starts a new game.
+	 */
+	public void newGame() {
+		// TODO: implement
+	}
+
+	/**
+	 * Creates a delay in the runtime.
 	 * 
 	 * @param time
+	 *            The amount of milliseconds to delay.
 	 */
 	public static void delay(long time) {
 		try {
@@ -315,11 +442,12 @@ public class TexasHoldem extends JFrame {
 			Thread.currentThread().interrupt();
 		}
 	}
-	
+
+	/**
+	 * Displays an about window.
+	 */
 	private void about() {
-		JOptionPane.showMessageDialog(this,
-		                              "MaxLinusHold'em\nVersion 1.0",
-		                              "About MaxLinusHoldem",
-		                              JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(this, "MaxLinusHold'em\nVersion 1.0",
+				"About MaxLinusHoldem", JOptionPane.INFORMATION_MESSAGE);
 	}
 }

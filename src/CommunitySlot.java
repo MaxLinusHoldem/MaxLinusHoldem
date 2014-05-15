@@ -1,7 +1,11 @@
 import java.awt.image.*;
-
 import javax.swing.*;
 
+/**
+ * A slot that holds the community card to be printed on a GamePanel.
+ * 
+ * @author Max Wällstedt
+ */
 @SuppressWarnings("serial")
 public class CommunitySlot extends JLabel {
 	int x;
@@ -9,13 +13,26 @@ public class CommunitySlot extends JLabel {
 	Card card;
 	GamePanel gamePanel;
 
+	/**
+	 * Creates a slot that can hold a community card.
+	 * 
+	 * @param card
+	 *            The card to be held by this community slot.
+	 * @param index
+	 *            The index [0, 4] of the community slot.
+	 * @param gamePanel
+	 *            The GamePanel where this community slot will be drawn.
+	 */
 	public CommunitySlot(Card card, int index, GamePanel gamePanel) {
 		if (index < 0 || index > 4) {
-			throw new IllegalArgumentException("error: Community card index must be within the range of [0, 4] (inclusive).");
+			throw new IllegalArgumentException(
+					"error: Community card index must be within the range of [0, 4] (inclusive).");
 		} else if (card == null) {
-			throw new IllegalArgumentException("error: Must specify card to add as community card.");
+			throw new IllegalArgumentException(
+					"error: Must specify card to add as community card.");
 		} else if (gamePanel == null) {
-			throw new IllegalArgumentException("error: Must specify GamePanel to draw card on.");
+			throw new IllegalArgumentException(
+					"error: Must specify GamePanel to draw card on.");
 		}
 
 		this.card = card;
@@ -42,7 +59,12 @@ public class CommunitySlot extends JLabel {
 		gamePanel.add(this);
 		gamePanel.setPosition(this, 0);
 	}
-	
+
+	/**
+	 * Returns the community card held in this community slot.
+	 * 
+	 * @return The community card held in this community slot.
+	 */
 	public Card getCard() {
 		return this.card;
 	}

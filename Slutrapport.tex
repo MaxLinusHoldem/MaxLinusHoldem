@@ -1,4 +1,6 @@
-\documentclass[10pt,twoside,a4paper]{article}
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -189,7 +191,14 @@ spelomgången. Den respons vi fick var framför allt på de buggar som vi inte
 hade fixat än eller funktioner som inte var fullt implementerade än. I
 övrigt verkade det som att de tyckte att spelet var roligt och snyggt.
 
+\subsubsection*{Del C}
+
+Testningen gick i stort sett som vi tänkte oss, och det hjälpte för att
+eliminera buggar i back-end tidigt.
+
 \subsection*{Programdesign}
+
+\subsubsection*{Del A}
 
 Klasstrukturen i den här typen av spel är ganska självklar i många
 avseenden. Exempelvis behövs klasser för kort, användare och även statiska
@@ -209,6 +218,29 @@ värddatorn köra spelklassen som håller koll på spelarnas interaktion med
 spelet. Lokalt på klientdatorerna kommer framför allt grafiken ritas. Alla
 datorer som är anslutna till spelet kommer därför regelbundet behöva få
 information om vad som har hänt i spelet.
+
+\subsubsection*{Del B}
+
+Klasstrukturen blev så att en huvudklass ärver av JFrame och är
+huvudfönstret. I denna finns även spelets huvudloop, samt kopplingar till
+de olika handlingarna som en användare kan utföra.
+
+Större grafiska enheter blev egna klasser som ärver av andra grafiska
+klasser. En klass som representerar något som syns på skärmen sköter även
+dessa grafiska egenskaper.
+
+\subsubsection*{Del C}
+
+Klassuppdelningen blev inte riktigt som vi först tänkt oss. Att helt dela
+upp front-end och back-end visade sig vara omständligt då man fick skicka
+runt data mellan klasserna på ett sätt som inte var så lätt att sköta, och
+mycket fick göras dubbelt upp eftersom det fanns både en grafisk spelare
+och en icke-grafisk ''abstrakt'' spelare.
+
+Eftersom vi bestämde oss för att inte göra en multiplayer-variant behövde
+vi inte ta hänsyn till detta i klasstrukturen och kunde göra mer coupling
+mellan grafik och backend, vilket i detta fall simplifierade koden
+avsevärt.
 
 \subsection*{Tekniska frågor}
 
