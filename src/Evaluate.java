@@ -25,7 +25,7 @@ public class Evaluate {
 	public static final String THREEOFAKIND = "Tree of a Kind";
 	public static final String TWOPAIRS = "Two Pairs";
 	public static final String ONEPAIR = "One Pair";
-	public static final String NOTHING = "Nothing";
+	public static final String NOTHING = "Kicker";
 
 	/**
 	 * Default constructor for the class Evaluate.
