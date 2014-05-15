@@ -12,6 +12,9 @@ public class User extends Player {
 
 	@Override
 	public void act(TexasHoldem gui) {
+		if (isAllIn) {
+			return;
+		}
 		gui.userAction();
 	}
 }

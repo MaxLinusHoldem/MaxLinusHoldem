@@ -13,7 +13,15 @@ public class AI extends Player {
 	
 	@Override
 	public void act(TexasHoldem gui) {
+		if (isAllIn) {
+			return;
+		}
 		TexasHoldem.delay(500);
-		this.call(gui.getCurrentBet());
+		
+		if (this.money < gui.getCurrentRaise()) {
+			allIn();
+		} else {
+			this.call(gui.getCurrentBet());
+		}
 	}
 }

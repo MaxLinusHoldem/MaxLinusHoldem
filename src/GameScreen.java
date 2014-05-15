@@ -11,6 +11,7 @@ public class GameScreen extends JPanel {
 	private JButton callButton;
 	private JButton raiseButton;
 	private JButton foldButton;
+	private JButton allInButton;
 
 	public GameScreen() {
 		setLayout(new BorderLayout());
@@ -24,6 +25,7 @@ public class GameScreen extends JPanel {
 		callButton = new JButton("Call");
 		raiseButton = new JButton("Raise");
 		foldButton = new JButton("Fold");
+		allInButton = new JButton("All-in");
 
 		add(gamePanel, BorderLayout.CENTER);
 
@@ -36,10 +38,12 @@ public class GameScreen extends JPanel {
 		if (facingBet) {
 			buttonPanel.add(callButton);
 			buttonPanel.add(raiseButton);
+			buttonPanel.add(allInButton);
 			buttonPanel.add(foldButton);
 		} else {
 			buttonPanel.add(checkButton);
 			buttonPanel.add(betButton);
+			buttonPanel.add(allInButton);
 		}
 
 		add(buttonPanel, BorderLayout.SOUTH);
@@ -47,6 +51,7 @@ public class GameScreen extends JPanel {
 
 	public void hideButtons() {
 		buttonPanel.removeAll();
+		buttonPanel.repaint();
 	}
 
 	private void makeMenuBar() {
@@ -95,5 +100,9 @@ public class GameScreen extends JPanel {
 
 	public JMenuBar getJMenuBar() {
 		return menubar;
+	}
+	
+	public JButton getAllInButton() {
+		return allInButton;
 	}
 }

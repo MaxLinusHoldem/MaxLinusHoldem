@@ -13,6 +13,7 @@ public abstract class Player {
 	protected int bet;
 	protected Card[] hand;
 	protected Evaluate winningHand;
+	protected boolean isAllIn;
 	public static final int STARTMONEY = 100;
 
 	protected GamePanel gamePanel;
@@ -111,6 +112,7 @@ public abstract class Player {
 	
 	public abstract void act(TexasHoldem gui);
 
+	
 	public void giveCard(Card card) {
 		if (hand[0] == null) {
 			hand[0] = card;
@@ -256,7 +258,7 @@ public abstract class Player {
 	 * @return true Indicates that the player is still in the game.
 	 * @throws IllegalArgumentException If the user tries to bet more money than he or she has. 
 	 */
-	public boolean bet(int amount) throws IllegalArgumentException {
+	public boolean bet(int amount, int currentRaise) throws IllegalArgumentException {
 		if (amount < 0) {
 			throw new IllegalArgumentException ("You can't bet a negative amount.");
 		}
@@ -266,6 +268,15 @@ public abstract class Player {
 		if (amount > this.money) {
 			throw new IllegalArgumentException ("You can't bet more money than you have.");
 		}
+		if (amount < currentRaise * 2) {
+			throw new IllegalArgumentException ("You need to raise at least double the previous raise.");
+		}
+		
+		if (amount == this.money) {
+			allIn();
+			return true;
+		}
+		
 		this.bet += amount;
 		this.money -= amount;
 		cashLabel.setText(String.format("%d $", money));
@@ -282,6 +293,16 @@ public abstract class Player {
 		gui.getDealer().getActivePlayers().remove(this);
 		this.removeCards();
 		return false;
+	}
+	
+
+	public boolean allIn() {
+		isAllIn = true;
+		this.bet += this.money;
+		this.money = 0;
+		cashLabel.setText(String.format("%d $", money));
+		betLabel.setText(String.format("Current bet: %d $", bet));
+		return true;
 	}
 	
 	public void betSmallBlind() {

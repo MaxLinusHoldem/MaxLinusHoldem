@@ -15,6 +15,7 @@ public class TexasHoldem extends JFrame {
 	private Dealer dealer;
 	public static final long DELAY = 200;
 	private boolean userAction;
+	private int currentRaise;
 	private int currentBet;
 	private int currentBetPlayer;
 
@@ -35,7 +36,14 @@ public class TexasHoldem extends JFrame {
 		players = new ArrayList<Player>();
 		communityCards = new ArrayList<CommunitySlot>();
 
-		players.add(new User("Max", 0, gameScreen.getGamePanel()));
+		String name = "";
+		while (name.isEmpty()) {
+			name = JOptionPane.showInputDialog(this, "Enter your name:");
+			if (name == null) {
+				System.exit(0);	
+			}
+		}
+		players.add(new User(name, 0, gameScreen.getGamePanel()));
 
 		for (int i = 0; i < 7; i++) {
 			players.add(new AI("COM" + i, i + 1, gameScreen.getGamePanel()));
@@ -69,13 +77,14 @@ public class TexasHoldem extends JFrame {
 
 			repaint();
 
-			players.get((dealerID + 1) % 8).betSmallBlind();
+			players.get((dealerID + 1) % players.size()).betSmallBlind();
 			delay(500);
 
-			players.get((dealerID + 2) % 8).bet(BIGBLIND);
+			players.get((dealerID + 2) % players.size()).bet(BIGBLIND, 0);
 			delay(500);
 			currentBet = BIGBLIND;
-			currentBetPlayer = (dealerID + 2) % 8;
+			currentRaise = BIGBLIND;
+			currentBetPlayer = (dealerID + 2) % players.size();
 			
 			dealer.dealCards();
 
@@ -87,12 +96,14 @@ public class TexasHoldem extends JFrame {
 			dealer.dealTheFlop();
 			
 			currentBet = 0;
+			currentRaise = 0;
 			if (!bettingRound(dealerID + 1)) {
 				dealer.removeBoard();
 				continue;
 			}
 			
 			currentBet = 0;
+			currentRaise = 0;
 			dealer.dealTheTurn();
 
 			if (!bettingRound(dealerID + 1)) {
@@ -101,6 +112,7 @@ public class TexasHoldem extends JFrame {
 			}
 
 			currentBet = 0;
+			currentRaise = 0;
 			dealer.dealTheRiver();
 
 			if (!bettingRound(dealerID + 1)) {
@@ -112,6 +124,19 @@ public class TexasHoldem extends JFrame {
 			JOptionPane.showMessageDialog(this, temp.getName() + " won " + dealer.getPot() +" $ with a " + temp.getWinningHand());
 			dealer.removePot();
 			dealer.removeBoard();
+			
+			for (int i = 0; i < players.size(); i++) {
+				if (players.get(i).getMoney() == 0) {
+					players.get(i).removeCards();
+					JOptionPane.showMessageDialog(this, players.get(i).getName() + " lost the game!");
+					players.remove(i);
+					i--;
+				}
+			}
+			if (players.size() == 1) {
+				JOptionPane.showMessageDialog(this, players.get(0).getName() + " won the game and " + players.get(0).getMoney() +" $.\nCongratulations!");
+				System.exit(0);
+			}
 		}
 	}
 
@@ -124,9 +149,10 @@ public class TexasHoldem extends JFrame {
 			currentPlayer = currentPlayer % dealer.getActivePlayers().size();
 			dealer.getActivePlayers().get(currentPlayer).act(this);
 			if (currentBet == dealer.getActivePlayers().get(currentPlayer).getBet() &&
-				(currentPlayer + 1) % dealer.getActivePlayers().size() == currentBetPlayer) {
+			   (currentPlayer + 1) % dealer.getActivePlayers().size() == currentBetPlayer) {
 				finished = true;
 			} else if (currentBet < dealer.getActivePlayers().get(currentPlayer).getBet()) {
+				currentRaise = dealer.getActivePlayers().get(currentPlayer).getBet() - currentBet;
 				currentBet = dealer.getActivePlayers().get(currentPlayer).getBet();
 				currentBetPlayer = currentPlayer;
 			}
@@ -144,10 +170,6 @@ public class TexasHoldem extends JFrame {
 		
 		for (int i = 0; i < players.size(); i++) {
 			dealer.addPot(players.get(i).removeBet());
-			if (players.get(i).getMoney() == 0) {
-				players.remove(players.get(i));
-				i--;
-			}
 		}
 		return true;
 	}
@@ -172,6 +194,10 @@ public class TexasHoldem extends JFrame {
         
         gameScreen.getFoldButton().addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) { fold(); }
+        });
+        
+        gameScreen.getAllInButton().addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) { allIn(); }
         });
 	}
 	
@@ -220,7 +246,7 @@ public class TexasHoldem extends JFrame {
 			}
 			
 			try {
-				players.get(0).bet(bet);
+				players.get(0).bet(bet, currentRaise);
 			} catch (IllegalArgumentException e) {
 				JOptionPane.showMessageDialog(this, e.getMessage());
 				continue;
@@ -236,10 +262,18 @@ public class TexasHoldem extends JFrame {
 		userAction = true;
 	}
 	
+	private void allIn() {
+		players.get(0).allIn();
+		userAction = true;
+	}
+	
 	public int getCurrentBet() {
 		return this.currentBet;
 	}
 	
+	public int getCurrentRaise() {
+		return this.currentRaise;
+	}
 	/**
 	 * 
 	 * @param time
