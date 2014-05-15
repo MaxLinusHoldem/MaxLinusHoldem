@@ -207,7 +207,13 @@ public class TexasHoldem extends JFrame {
 		
 		while (true) {
 			try {
-				bet = Integer.parseInt(JOptionPane.showInputDialog(this, "Enter your bet:"));
+				String betStr = JOptionPane.showInputDialog(this, "Enter your bet:");
+
+				if (betStr == null) {
+					return;
+				}
+
+				bet = Integer.parseInt(betStr);
 			} catch (NumberFormatException e) {
 				JOptionPane.showMessageDialog(this, "You must enter a valid number!");
 				continue;
