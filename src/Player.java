@@ -262,6 +262,10 @@ public abstract class Player {
 		if (amount < 0) {
 			throw new IllegalArgumentException ("You can't bet a negative amount.");
 		}
+		if (amount == this.money) {
+			allIn();
+			return true;
+		}
 		if (amount < TexasHoldem.BIGBLIND) {
 			throw new IllegalArgumentException ("You can't bet less than the big blind.");
 		}
@@ -270,11 +274,6 @@ public abstract class Player {
 		}
 		if (amount < currentRaise * 2) {
 			throw new IllegalArgumentException ("You need to raise at least double the previous raise.");
-		}
-		
-		if (amount == this.money) {
-			allIn();
-			return true;
 		}
 		
 		this.bet += amount;
