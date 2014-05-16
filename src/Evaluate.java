@@ -8,7 +8,7 @@ import java.util.Collections;
  * has a hand or not.
  * 
  * @author Linus Wåreus
- * @version 2014.05.15
+ * @version 1.0 (2014.05.16)
  */
 public class Evaluate {
 	private List<Card> allCards; // All community cards plus the players cards.
@@ -30,13 +30,18 @@ public class Evaluate {
 	/**
 	 * Default constructor for the class Evaluate.
 	 * 
-	 * @param playerCards The player's card.
-	 * @param board The cards from the board.
-	 * @throws IllegalArgumentException If playerCards is null.
+	 * @param playerCards
+	 *            The player's card.
+	 * @param board
+	 *            The cards from the board.
+	 * @throws IllegalArgumentException
+	 *             If playerCards is null.
 	 */
-	Evaluate(List<Card> playerCards, List<Card> board) throws IllegalArgumentException {
+	Evaluate(List<Card> playerCards, List<Card> board)
+			throws IllegalArgumentException {
 		if (playerCards == null) {
-			throw new IllegalArgumentException("playerCards must contain cards.");
+			throw new IllegalArgumentException(
+					"playerCards must contain cards.");
 		}
 		if (board == null) {
 			board = new ArrayList<Card>();
@@ -56,8 +61,8 @@ public class Evaluate {
 	 *         <ul>
 	 *         		<li>8 = Straight Flush</li>
 	 *         		<li>7 = Four of a Kind</li>
-	 *         		<li>6 = Full House</li>
-	 *         		<li>5 = Flush</li>
+	 *     		    <li>6 = Full House</li>
+	 *     		    <li>5 = Flush</li>
 	 *         		<li>4 = Straight</li>
 	 *         		<li>3 = Three of a Kind</li>
 	 *         		<li>2 = Two Pairs</li>
@@ -106,8 +111,10 @@ public class Evaluate {
 	/**
 	 * Tests if the cards is a straight flush.
 	 * 
-	 * @param cards The cards to be tested.
-	 * @return true if the cards was a straight flush, false if the cards wasn't.
+	 * @param cards
+	 *            The cards to be tested.
+	 * @return true if the cards was a straight flush, false if the cards
+	 *         wasn't.
 	 */
 	private boolean straightFlush(List<Card> cards) {
 		if (flush(cards)) {
@@ -124,8 +131,10 @@ public class Evaluate {
 	/**
 	 * Tests if the cards is a four of a kind.
 	 * 
-	 * @param cards The cards to be tested.
-	 * @return true if the cards was a four of a kind, false if the cards wasn't.
+	 * @param cards
+	 *            The cards to be tested.
+	 * @return true if the cards was a four of a kind, false if the cards
+	 *         wasn't.
 	 */
 	private boolean fourOfAKind(List<Card> cards) {
 		for (int i = 0; i < cards.size() - 3; i++) {
@@ -159,7 +168,8 @@ public class Evaluate {
 	/**
 	 * Tests if the cards is a full house.
 	 * 
-	 * @param cards The cards to be tested.
+	 * @param cards
+	 *            The cards to be tested.
 	 * @return true if the cards was a full house, false if the cards wasn't.
 	 */
 	private boolean fullHouse(List<Card> cards) {
@@ -183,7 +193,8 @@ public class Evaluate {
 	/**
 	 * Tests if the cards is a flush.
 	 * 
-	 * @param cards The cards to be tested.
+	 * @param cards
+	 *            The cards to be tested.
 	 * @return true if the cards was a flush, false if the cards wasn't.
 	 */
 	private boolean flush(List<Card> cards) {
@@ -218,7 +229,8 @@ public class Evaluate {
 	/**
 	 * Tests if the cards is a straight.
 	 * 
-	 * @param cards The cards to be tested.
+	 * @param cards
+	 *            The cards to be tested.
 	 * @return true if the cards was a straight, false if the cards wasn't.
 	 */
 	private boolean straight(List<Card> cards) {
@@ -253,8 +265,10 @@ public class Evaluate {
 	/**
 	 * Tests if the cards is a three of a kind.
 	 * 
-	 * @param cards The cards to be tested.
-	 * @return true if the cards was a three of a kind, false if the cards wasn't.
+	 * @param cards
+	 *            The cards to be tested.
+	 * @return true if the cards was a three of a kind, false if the cards
+	 *         wasn't.
 	 */
 	private boolean threeOfAKind(List<Card> cards) {
 		List<ArrayList<Card>> threeOfAKind = new ArrayList<ArrayList<Card>>();
@@ -279,7 +293,8 @@ public class Evaluate {
 			if (threeOfAKind.size() == 1) {
 				hand = new ArrayList<Card>(threeOfAKind.get(0));
 			} else if (threeOfAKind.size() == 2) {
-				if (threeOfAKind.get(0).get(0).getValue() > threeOfAKind.get(1).get(0).getValue()) {
+				if (threeOfAKind.get(0).get(0).getValue() > threeOfAKind.get(1)
+						.get(0).getValue()) {
 					hand = new ArrayList<Card>(threeOfAKind.get(0));
 				} else {
 					hand = new ArrayList<Card>(threeOfAKind.get(1));
@@ -299,7 +314,8 @@ public class Evaluate {
 	/**
 	 * Tests if the cards is a two pair.
 	 * 
-	 * @param cards The cards to be tested.
+	 * @param cards
+	 *            The cards to be tested.
 	 * @return true if the cards was a two pair, false if the cards wasn't.
 	 */
 	private boolean twoPairs(List<Card> cards) {
@@ -325,7 +341,8 @@ public class Evaluate {
 	/**
 	 * Tests if the cards is a one pair.
 	 * 
-	 * @param cards The cards to be tested.
+	 * @param cards
+	 *            The cards to be tested.
 	 * @return true if the cards was a one pair, false if the cards wasn't.
 	 */
 	private boolean onePair(List<Card> cards) {
@@ -346,40 +363,41 @@ public class Evaluate {
 		if (pairs.size() != 0) {
 			int max = 0;
 			for (int i = 1; i < pairs.size(); i++) {
-				if (pairs.get(i).get(0).getValue() > pairs.get(max).get(0).getValue()) {
+				if (pairs.get(i).get(0).getValue() > pairs.get(max).get(0)
+						.getValue()) {
 					max = i;
 				}
 			}
 			hand = new ArrayList<Card>();
 			hand.addAll(pairs.get(max));
-			
+
 			handIndex = new int[5];
 			handIndex[0] = 1;
 			handIndex[1] = hand.get(0).getValue();
 			int[] tempHandIndex = kicker(cards);
-			
+
 			if (tempHandIndex.length >= 3) {
 				handIndex[2] = tempHandIndex[0];
 				handIndex[3] = tempHandIndex[1];
 				handIndex[4] = tempHandIndex[2];
-				}
+			}
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
-	 * Takes out the five highest cards if the player
-	 * has got nothing.
+	 * Takes out the five highest cards if the player has got nothing.
 	 * 
-	 * @param cards The cards to be tested.
+	 * @param cards
+	 *            The cards to be tested.
 	 * @return true Indicates that the cards was nothing.
 	 */
 	private boolean nothing(List<Card> cards) {
 		ArrayList<Card> temp = new ArrayList<Card>(cards);
 		handIndex = new int[6];
 		handIndex[0] = 0;
-		int [] tempHandIndex = kicker(temp);
+		int[] tempHandIndex = kicker(temp);
 		for (int i = 0; i < tempHandIndex.length; i++) {
 			handIndex[i + 1] = tempHandIndex[i];
 			if (i == 4) {
@@ -388,11 +406,12 @@ public class Evaluate {
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Takes out all the kickers from the cards.
 	 * 
-	 * @param cards The cards to be tested.
+	 * @param cards
+	 *            The cards to be tested.
 	 * @return kickers An array with all the kickers.
 	 */
 	private int[] kicker(List<Card> cards) {
@@ -406,7 +425,7 @@ public class Evaluate {
 		}
 		return kickers;
 	}
-	
+
 	/**
 	 * Returns the player's hand.
 	 * 
