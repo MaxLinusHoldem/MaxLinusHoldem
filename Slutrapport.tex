@@ -6,6 +6,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage[swedish]{babel}
 
+\usepackage{hyperref}
+
 \usepackage{fancyhdr}
 
 \pagestyle{fancy}
@@ -19,6 +21,9 @@
 
 \begin{document}
 \section*{Slutrapport}
+
+GitHub-länk till projektet:
+\url{https://github.com/MaxLinusHoldem/MaxLinusHoldem}.
 
 \subsection*{Programbeskrivning}
 
@@ -56,6 +61,10 @@ att presentera. Online-version en kan alltså ses som ett extra arbete som
 vi kommer försöka att utveckla i mån av tid och om det inte är allt för
 svårt.
 
+\subsubsection*{Del B}
+
+\subsubsection*{Del C}
+
 \subsection*{Användarbeskrivning}
 
 \subsubsection*{Del A}
@@ -78,6 +87,10 @@ barn förmodligen inte vet hur man spelar poker. Så programmet ska med andra
 ord kunna spelas av tio åringar och någon övre åldersgräns finns inte. Vår
 huvudsakliga målgrupp kommer dock vara vuxna personer, fast spelet skall
 ändå kunna spelas av barn äldre en tio år.
+
+\subsubsection*{Del B}
+
+\subsubsection*{Del C}
 
 \subsection*{Användarscenarier}
 
@@ -155,6 +168,10 @@ Bertil valet ”Disconnect from server”. När han klickar där kommer han
 tillbaka till huvudmeny och välkomstskärmen. Där väljer han istället valet
 ”Single player” och startar upp ett nytt spel mot datorn.
 
+\subsubsection*{Del B}
+
+\subsubsection*{Del C}
+
 \subsection*{Testplan}
 
 \subsubsection*{Del A}
@@ -191,10 +208,15 @@ spelomgången. Den respons vi fick var framför allt på de buggar som vi inte
 hade fixat än eller funktioner som inte var fullt implementerade än. I
 övrigt verkade det som att de tyckte att spelet var roligt och snyggt.
 
+En sak som användartestningen visade var att det tar ett litet tag för en
+ny användare att förstå gränssnittet, men efter en spelrunda sitter allt
+som det ska.
+
 \subsubsection*{Del C}
 
-Testningen gick i stort sett som vi tänkte oss, och det hjälpte för att
-eliminera buggar i back-end tidigt.
+Testningen gick till i stort sett som vi tänkte oss från början.
+Enhetstestningen hjälpte oss att tidigt eliminera buggar i back-end och
+användartestningen hjälpte oss att finna de mest akuta buggarna mot slutet.
 
 \subsection*{Programdesign}
 
@@ -240,9 +262,13 @@ och en icke-grafisk ''abstrakt'' spelare.
 Eftersom vi bestämde oss för att inte göra en multiplayer-variant behövde
 vi inte ta hänsyn till detta i klasstrukturen och kunde göra mer coupling
 mellan grafik och backend, vilket i detta fall simplifierade koden
-avsevärt.
+avsevärt. Exempel på detta är att när man ger en spelare ett kort genom
+player.giveCard(card) så ritas det omedelbart ut på spelskärmen eftersom
+spelaren har koll på var den ska rita ut saker.
 
 \subsection*{Tekniska frågor}
+
+\subsubsection*{Del A}
 
 Tekniska frågor i första stadiet handlar mest om hur vi ska göra
 gränssnittet och få detta att kommunicera med spelet. Det mesta vad gäller
@@ -255,7 +281,21 @@ detta område, så det är även här svårt att vara särskilt specifik. När v
 har kommit igång med kodandet kommer tekniska frågor bli mer konkreta och
 aktuella.
 
+\subsubsection*{Del B}
+
+Tekniska frågor blev t.ex. hur ett gui ska kommunicera med spelmekaniken.
+Eftersom ingen multiplayervariant ska utvecklas försvinner många tekniska
+frågor angående just det.
+
+\subsubsection*{Del C}
+
+GUI-delen av de tekniska frågorna förblev medan multiplayerfrågorna
+försvann. Vi hade ganska bra koll på var problem kunde uppstå tidigt, och
+insåg att multiplayervarianten inte var rimlig inom tidsramen.
+
 \subsection*{Arbetsplan}
+
+\subsubsection*{Del A}
 
 I vårt projekt planerar vi att dela upp arbetet jämnt mellan varandra. När
 vi sedan kommit överens om vilka olika delar vi kommer programmera av
@@ -299,5 +339,26 @@ användartesterna som tillhör. Allt detta bör göras tidigt den tredje veckan
 så att man har onsdagen och torsdagen till att göra finjusteringar på
 spelet och se till så att allt är klart för inlämning. Sedan skall allt
 lämnas in den sista övningen fredag den 16 maj.
+
+\subsubsection*{Del B}
+
+\subsubsection*{Del C}
+
+\subsection*{Sammanfattning}
+
+Under projektets gång har vi lärt oss tänket bakom gränssnitt i swing. Även
+om man inte kan varenda funktionalitet i swing så förstår vi hur det
+fungerar och kan därmed snabbt söka efter vad som behövs i dokumentationen.
+
+Vi har även lärt oss om hur viktig klasstrukturen är när programmet växer;
+vi fick nämligen göra om gränssnittets och spelomgångens klasstrukturer två
+gånger innan vi hittade något som gick att bygga ut programmet på.
+
+Spelet är nu organiserat på ett så sätt att det hyfsat enkelt går att bygga
+ut, så det man kan göra för att vidare utveckla det är att se om det finns
+fler buggar att fixa, vilket bör gå att finna genom större skala av
+användartestning. Sedan hade en LAN-version av spelet nog krävt mycket
+refactoring och uppdelning av front-end/back-end, men det är definitivt
+nästa sak att kolla upp.
 
 \end{document}
