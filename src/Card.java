@@ -7,7 +7,7 @@ import javax.imageio.*;
  * This class creates a playing card.
  * 
  * @author Linus Wåreus & Max Wällstedt
- * @version 2014.05.15
+ * @version 1.0 (2014.05.16)
  */
 public class Card implements Comparable<Card> {
 	private int value; // The cards value.
@@ -15,27 +15,32 @@ public class Card implements Comparable<Card> {
 	private String rank; // The cards rank.
 	private BufferedImage image; // The card's image.
 	private BufferedImage backImage; // The card's back image.
-	
+
 	// The approved suits for a card.
 	public static final String CLUBS = "Clubs";
 	public static final String DIAMONDS = "Diamonds";
 	public static final String HEARTS = "Hearts";
 	public static final String SPADES = "Spades";
-	
+
 	/**
 	 * Default constructor of the class Card.
 	 * 
-	 * @param value The cards value.
-	 * @param suit The cards suit.
-	 * @throws IllegalArgumentException If  value < 2 or value > 14 or
-	 * 									suit isn't CLUBS, DIAMONDS, HEARTS or SPADES.
+	 * @param value
+	 *            The cards value.
+	 * @param suit
+	 *            The cards suit.
+	 * @throws IllegalArgumentException
+	 *             If value < 2 or value > 14 or suit isn't CLUBS, DIAMONDS,
+	 *             HEARTS or SPADES.
 	 */
 	public Card(int value, String suit) throws IllegalArgumentException {
-		if(value < 2 || value > 14) {
-			throw new IllegalArgumentException ("Value must be between 2 and 14.");
+		if (value < 2 || value > 14) {
+			throw new IllegalArgumentException(
+					"Value must be between 2 and 14.");
 		}
-		if (suit != CLUBS && suit != DIAMONDS && suit != HEARTS && suit != SPADES) {
-			throw new IllegalArgumentException ("Invalid value for suit.");
+		if (suit != CLUBS && suit != DIAMONDS && suit != HEARTS
+				&& suit != SPADES) {
+			throw new IllegalArgumentException("Invalid value for suit.");
 		}
 		this.value = value;
 		this.suit = suit;
@@ -44,10 +49,10 @@ public class Card implements Comparable<Card> {
 	}
 
 	/**
-	 * This method calculates the cards rank by evaluating
-	 * the cards value.
+	 * This method calculates the cards rank by evaluating the cards value.
 	 * 
-	 * @param value The cards value.
+	 * @param value
+	 *            The cards value.
 	 * @return The cards rank.
 	 */
 	private String calculateRank(int value) {
@@ -62,7 +67,7 @@ public class Card implements Comparable<Card> {
 		}
 		return "" + value;
 	}
-	
+
 	/**
 	 * Tries to load the card's image from the file system.
 	 */
@@ -73,18 +78,18 @@ public class Card implements Comparable<Card> {
 		try {
 			image = ImageIO.read(new File(frontPath));
 		} catch (IOException e) {
-			System.err.println("error: File \"" + frontPath + "\" not found.");
+			System.err.println("File \"" + frontPath + "\" not found.");
 			System.exit(1);
 		}
 
 		try {
 			backImage = ImageIO.read(new File(backPath));
 		} catch (IOException e) {
-			System.err.println("error: File \"" + backPath + "\" not found.");
+			System.err.println("File \"" + backPath + "\" not found.");
 			System.exit(1);
 		}
 	}
-	
+
 	/**
 	 * Returns the card's value.
 	 * 
@@ -93,7 +98,7 @@ public class Card implements Comparable<Card> {
 	public int getValue() {
 		return this.value;
 	}
-	
+
 	/**
 	 * Returns the card's suit
 	 * 
@@ -102,7 +107,7 @@ public class Card implements Comparable<Card> {
 	public String getSuit() {
 		return this.suit;
 	}
-	
+
 	/**
 	 * Returns the card's image.
 	 * 
@@ -120,7 +125,7 @@ public class Card implements Comparable<Card> {
 	public BufferedImage getBackImage() {
 		return this.backImage;
 	}
-	
+
 	/**
 	 * Returns a string of the card.
 	 * 
@@ -134,7 +139,8 @@ public class Card implements Comparable<Card> {
 	/**
 	 * Compares two cards values to each other.
 	 * 
-	 * @param card The card to compare this card to.
+	 * @param card
+	 *            The card to compare this card to.
 	 * @return A negative integer, zero, or a positive integer as this cards
 	 *         value is less than, equal to, or greater than the specified cards
 	 *         value.

@@ -2,13 +2,13 @@ import java.awt.Color;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
-import java.util.Arrays;
 
 /**
- * The class Dealer. This class acts as the dealer of the game.
+ * The class Dealer.
+ * This class acts as the dealer of the game.
  * 
  * @author Linus Wåreus & Max Wällstedt
- * @version 2014.05.15
+ * @version 1.0 (2014.05.16)
  */
 public class Dealer {
 	private Deck deck; // The deck.

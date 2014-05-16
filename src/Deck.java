@@ -4,10 +4,11 @@ import java.util.Random;
 import java.util.EmptyStackException;
 
 /**
- * The class Deck. This class creates and shuffles a deck with cards.
+ * The class Deck.
+ * This class creates and shuffles a deck with cards.
  * 
  * @author Linus Wåreus
- * @version 2014.05.15
+ * @version 1.0 (2014.05.16)
  */
 public class Deck {
 	private Stack<Card> deck; // The shuffled deck.
@@ -22,8 +23,8 @@ public class Deck {
 		this.deck = new Stack<Card>();
 		this.sortedDeck = new ArrayList<Card>();
 		this.randomGenerator = new Random();
-		createDeck();
-		shuffleDeck();
+		createDeck(); // Creates the deck.
+		shuffleDeck(); // Shuffles the deck.
 	}
 
 	/**
@@ -56,7 +57,8 @@ public class Deck {
 	 * Draws a card from the the top of the deck.
 	 * 
 	 * @return A card from the top of the deck.
-	 * @throws EmptyStackException If the deck is empty.
+	 * @throws EmptyStackException
+	 *             If the deck is empty.
 	 */
 	public Card drawCard() throws EmptyStackException {
 		return deck.pop();
