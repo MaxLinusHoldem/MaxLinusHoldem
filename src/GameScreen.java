@@ -50,6 +50,7 @@ public class GameScreen extends JPanel {
 	 * action.
 	 * 
 	 * @param facingBet
+	 * 		True if the user is facing a bet otherwise false.
 	 */
 	public void showButtons(boolean facingBet) {
 		buttonPanel.removeAll();
@@ -98,50 +99,100 @@ public class GameScreen extends JPanel {
 	}
 
 	/**
-	 * Returns the game panel
+	 * Returns the GamePanel of the game.
 	 * 
-	 * @return
+	 * @return The GamePanel of the game.
 	 */
 	public GamePanel getGamePanel() {
 		return gamePanel;
 	}
 
+	/**
+	 * Returns the check button.
+	 *
+	 * @return The check button.
+	 */
 	public JButton getCheckButton() {
 		return checkButton;
 	}
 
+	/**
+	 * Returns the bet button.
+	 *
+	 * @return The bet button.
+	 */
 	public JButton getBetButton() {
 		return betButton;
 	}
 
+	/**
+	 * Returns the call button.
+	 *
+	 * @return The call button.
+	 */
 	public JButton getCallButton() {
 		return callButton;
 	}
 
+	/**
+	 * Returns the raise button.
+	 *
+	 * @return The raise button.
+	 */
 	public JButton getRaiseButton() {
 		return raiseButton;
 	}
 
+	/**
+	 * Returns the fold button.
+	 *
+	 * @return The fold button.
+	 */
 	public JButton getFoldButton() {
 		return foldButton;
 	}
 
+	/**
+	 * Returns the menu bar.
+	 *
+	 * @return The menu bar.
+	 */
 	public JMenuBar getJMenuBar() {
 		return menubar;
 	}
 
+	/**
+	 * Returns the all-in button.
+	 *
+	 * @return The all-in button.
+	 */
 	public JButton getAllInButton() {
 		return allInButton;
 	}
 
+	/**
+	 * Returns the new game item of the menu bar.
+	 *
+	 * @return The new game item of the menu bar.
+	 */
 	public JMenuItem getNewGameItem() {
 		return newItem;
 	}
 
+	/**
+	 * Returns the quit item of the menu bar.
+	 *
+	 * @return The quit item of the menu bar.
+	 */
 	public JMenuItem getQuitItem() {
 		return quitItem;
 	}
 
+	/**
+	 * Returns the about item of the menu bar.
+	 *
+	 * @return The about item of the menu bar.
+	 */
 	public JMenuItem getAboutItem() {
 		return aboutItem;
 	}
