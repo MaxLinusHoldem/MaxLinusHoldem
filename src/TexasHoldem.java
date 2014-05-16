@@ -83,6 +83,7 @@ public class TexasHoldem extends JFrame {
 	private void play() {
 		int dealerID = -1;
 
+		// Main game loop.
 		while (true) {
 			dealerID++;
 
@@ -98,6 +99,7 @@ public class TexasHoldem extends JFrame {
 
 			repaint();
 
+			// If heads up (only two players)
 			if (players.size() == 2) {
 				players.get(dealerID % players.size()).betSmallBlind();
 				delay(500);
@@ -120,12 +122,15 @@ public class TexasHoldem extends JFrame {
 
 			dealer.dealCards();
 
+			// If heads up (only two players)
 			if (players.size() == 2) {
+				// Pre flop betting round
 				if (!bettingRound(dealerID % dealer.getActivePlayers().size())) {
 					dealer.removeBoard();
 					continue;
 				}
 			} else {
+				// Pre flop betting round
 				if (!bettingRound((dealerID + 3) % dealer.getActivePlayers().size())) {
 					dealer.removeBoard();
 					continue;
@@ -137,6 +142,7 @@ public class TexasHoldem extends JFrame {
 			currentBet = 0;
 			currentRaise = 0;
 
+			// Flop betting round
 			if (!bettingRound((dealerID + 1) % dealer.getActivePlayers().size())) {
 				dealer.removeBoard();
 				continue;
@@ -146,6 +152,7 @@ public class TexasHoldem extends JFrame {
 			currentRaise = 0;
 			dealer.dealTheTurn();
 
+			// The turn betting round
 			if (!bettingRound((dealerID + 1) % dealer.getActivePlayers().size())) {
 				dealer.removeBoard();
 				continue;
@@ -155,6 +162,7 @@ public class TexasHoldem extends JFrame {
 			currentRaise = 0;
 			dealer.dealTheRiver();
 
+			// The river betting round
 			if (!bettingRound((dealerID + 1) % dealer.getActivePlayers().size())) {
 				dealer.removeBoard();
 				continue;
@@ -166,6 +174,7 @@ public class TexasHoldem extends JFrame {
 			dealer.removePot();
 			dealer.removeBoard();
 
+			// Remove players from game if they have no money.
 			for (int i = 0; i < players.size(); i++) {
 				if (players.get(i).getMoney() == 0) {
 					players.get(i).removeCards();
@@ -175,6 +184,8 @@ public class TexasHoldem extends JFrame {
 					i--;
 				}
 			}
+
+			// If there's only one player left, they won.
 			if (players.size() == 1) {
 				JOptionPane.showMessageDialog(this, players.get(0).getName()
 						+ " won the game and " + players.get(0).getMoney()
@@ -198,22 +209,28 @@ public class TexasHoldem extends JFrame {
 		boolean finished = false;
 
 		while (!finished) {
+			// Iterate over all the active players cyclicly.
 			currentPlayer = currentPlayer % dealer.getActivePlayers().size();
 			int lastSize = dealer.getActivePlayers().size();
 			dealer.getActivePlayers().get(currentPlayer).act(this);
+
+			// Check if the player folded. If not, do stuff.
 			if (!(lastSize > dealer.getActivePlayers().size())) {
 				int newCurrentBet = dealer.getActivePlayers().get(currentPlayer).isAllIn() ?
 						      		currentBet : dealer.getActivePlayers().get(currentPlayer).getBet();
 				
 				if (currentBet == newCurrentBet && (currentPlayer + 1) % dealer.getActivePlayers().size() == currentBetPlayer) {
+					// The betting round is finished.
 					finished = true;
 				} else if (currentBet < newCurrentBet) {
+					// Player made a raise.
 					currentRaise = dealer.getActivePlayers().get(currentPlayer).getBet() - currentBet;
 					currentBet = dealer.getActivePlayers().get(currentPlayer).getBet();
 					currentBetPlayer = currentPlayer;
 				}
 			}
 			
+			// If there's only one player left, they won the betting round.
 			if (dealer.getActivePlayers().size() == 1) {
 				for (Player p : players) {
 					dealer.addPot(p.removeBet());
