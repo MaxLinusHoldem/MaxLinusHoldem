@@ -7,6 +7,7 @@ import javax.swing.border.*;
  * the menu bar.
  * 
  * @author Max Wällstedt
+ * @version 1.0 (2014.05.16)
  */
 @SuppressWarnings("serial")
 public class GameScreen extends JPanel {

@@ -9,6 +9,7 @@ import javax.imageio.*;
  * A panel that will contain all the graphical elements of the game.
  * 
  * @author Max Wällstedt
+ * @version 1.0 (2014.05.16)
  */
 @SuppressWarnings("serial")
 public class GamePanel extends JLayeredPane {

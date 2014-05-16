@@ -5,6 +5,7 @@ import javax.swing.*;
  * A slot that holds the community card to be printed on a GamePanel.
  * 
  * @author Max Wällstedt
+ * @version 1.0 (2014.05.16)
  */
 @SuppressWarnings("serial")
 public class CommunitySlot extends JLabel {

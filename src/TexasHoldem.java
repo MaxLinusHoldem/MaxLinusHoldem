@@ -6,24 +6,24 @@ import javax.swing.*;
 /**
  * The main window of the game.
  * 
- * @author Max Wällstedt, Linus Wåreus
+ * @author Linus Wåreus & Max Wällstedt
+ * @version 1.0 (2014.05.16)
  */
 @SuppressWarnings("serial")
 public class TexasHoldem extends JFrame {
-	public static final int BIGBLIND = 2;
-	public static final int SMALLBLIND = BIGBLIND / 2;
+	public static final int BIGBLIND = 2; // The big blind in the game.
+	public static final int SMALLBLIND = BIGBLIND / 2; // The small blind in the game.
 	private Container contentPane;
 	private GameScreen gameScreen;
-	private ArrayList<Player> players;
-	private ArrayList<CommunitySlot> communityCards;
-	private Dealer dealer;
-	public static final long DELAY = 200;
-	private boolean userAction;
-	private int currentRaise;
-	private int currentBet;
-	private int currentBetPlayer;
-	private final int SHORTCUT_MASK = Toolkit.getDefaultToolkit()
-			.getMenuShortcutKeyMask();
+	private ArrayList<Player> players; // All players in the game.
+	private ArrayList<CommunitySlot> communityCards; // The community cards in the game.
+	private Dealer dealer; // The dealer in the game.
+	public static final long DELAY = 200; // The delay used in the games GUI.
+	private boolean userAction; // Indicates if the user has act or not.
+	private int currentRaise; // The current raise in the game.
+	private int currentBet; // The current bet in the game.
+	private int currentBetPlayer; // The current player who made the current bet in the game.
+	private final int SHORTCUT_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
 	/**
 	 * The main method that will make a new TexasHoldem object.
@@ -203,17 +203,13 @@ public class TexasHoldem extends JFrame {
 			dealer.getActivePlayers().get(currentPlayer).act(this);
 			if (!(lastSize > dealer.getActivePlayers().size())) {
 				int newCurrentBet = dealer.getActivePlayers().get(currentPlayer).isAllIn() ?
-						        currentBet : dealer.getActivePlayers().get(currentPlayer).getBet();
+						      		currentBet : dealer.getActivePlayers().get(currentPlayer).getBet();
 				
-				if (currentBet == newCurrentBet
-						&& (currentPlayer + 1) % dealer.getActivePlayers().size() == currentBetPlayer) {
+				if (currentBet == newCurrentBet && (currentPlayer + 1) % dealer.getActivePlayers().size() == currentBetPlayer) {
 					finished = true;
 				} else if (currentBet < newCurrentBet) {
-					currentRaise = dealer.getActivePlayers().get(currentPlayer)
-							.getBet()
-							- currentBet;
-					currentBet = dealer.getActivePlayers().get(currentPlayer)
-							.getBet();
+					currentRaise = dealer.getActivePlayers().get(currentPlayer).getBet() - currentBet;
+					currentBet = dealer.getActivePlayers().get(currentPlayer).getBet();
 					currentBetPlayer = currentPlayer;
 				}
 			}
@@ -222,9 +218,7 @@ public class TexasHoldem extends JFrame {
 				for (Player p : players) {
 					dealer.addPot(p.removeBet());
 				}
-				JOptionPane.showMessageDialog(this, dealer.getActivePlayers()
-						.get(0).getName()
-						+ " won " + dealer.getPot() + " $.");
+				JOptionPane.showMessageDialog(this, dealer.getActivePlayers().get(0).getName() + " won " + dealer.getPot() + " $.");
 				dealer.getActivePlayers().get(0).addMoney(dealer.removePot());
 				return false;
 			}

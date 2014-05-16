@@ -170,21 +170,34 @@ public class Dealer {
 	}
 
 	/**
-	 * Selects a winner in the game.
+	 * Selects a winner in a game round.
+	 * 
+	 * @return bestPlayer The best player in the game round.
 	 */
 	public Player selectWinner() {
 		Player bestPlayer = null;
-		int[] bestHand = new int[6];
+		int[] bestHand = new int[6]; // The player's best hand.
+		
+		// Selects a winner in the game round.
 		for (int i = 0; i < activePlayers.size(); i++) {
+			// Simulates the dealer thinking.
 			TexasHoldem.delay(500);
+			// Shows the player's cards.
 			activePlayers.get(i).showCards();
 			ArrayList<Card> cards = new ArrayList<Card>();
+			
+			// Gets the cards from the board.
 			for (int j = 0; j < board.size(); j++) {
 				cards.add(board.get(j).getCard());
 			}
+			// Evaluates the cards.
 			Evaluate hand = new Evaluate(activePlayers.get(i).getCards(), cards);
+			// Sets the winning hand of the player.
 			activePlayers.get(i).setWinningHand(hand);
+			
 			int[] temp = hand.testHand();
+			// Compares the player's hand to see if it is the best hand
+			// in the game round so far.
 			for (int j = 0; j < temp.length; j++) {
 				if (temp[j] > bestHand[j]) {
 					bestPlayer = activePlayers.get(i);
@@ -192,9 +205,13 @@ public class Dealer {
 					break;
 				} else if (temp[j] < bestHand[j]) {
 					break;
+				} else {
+					// TODO: Implements split pot.
 				}
 			}
 		}
+		
+		// Adds the money in the pot to the winning player.
 		bestPlayer.addMoney(this.getPot());
 		return bestPlayer;
 	}

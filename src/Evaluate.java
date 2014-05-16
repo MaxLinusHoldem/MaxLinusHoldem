@@ -14,6 +14,7 @@ public class Evaluate {
 	private List<Card> allCards; // All community cards plus the players cards.
 	private List<Card> hand; // The players hand.
 	private String result; // The type of hand represented by a string.
+	// An array representing the hand's value, so it may be compared.
 	private int[] handIndex;
 
 	// The hands represented by a string.
@@ -37,15 +38,17 @@ public class Evaluate {
 	 * @throws IllegalArgumentException
 	 *             If playerCards is null.
 	 */
-	Evaluate(List<Card> playerCards, List<Card> board)
-			throws IllegalArgumentException {
+	Evaluate(List<Card> playerCards, List<Card> board) throws IllegalArgumentException {
+		// Throws an exception if the player's card is null.
 		if (playerCards == null) {
 			throw new IllegalArgumentException(
 					"playerCards must contain cards.");
 		}
+		// If the board is null, a new array list is created.
 		if (board == null) {
 			board = new ArrayList<Card>();
 		}
+		
 		this.allCards = new ArrayList<Card>();
 		this.hand = new ArrayList<Card>();
 		this.allCards.addAll(playerCards);
@@ -57,7 +60,8 @@ public class Evaluate {
 	 * Tests the players cards to see if he or she has a hand. Returns the hand
 	 * represented by an integer to indicate which hand it is.
 	 * 
-	 * @return The hand represented by an integer to indicate which hand it is.
+	 * @return The hand represented by an array to indicate which hand it is.
+	 * 		   The first index in the returned array represents the following:
 	 *         <ul>
 	 *         		<li>8 = Straight Flush</li>
 	 *         		<li>7 = Four of a Kind</li>
@@ -143,8 +147,7 @@ public class Evaluate {
 					for (int k = j + 1; k < cards.size() - 1; k++) {
 						if (cards.get(i).getValue() == cards.get(k).getValue()) {
 							for (int l = k + 1; k < cards.size(); k++) {
-								if (cards.get(i).getValue() == cards.get(l)
-										.getValue()) {
+								if (cards.get(i).getValue() == cards.get(l).getValue()) {
 									hand.add(cards.get(i));
 									hand.add(cards.get(j));
 									hand.add(cards.get(k));
@@ -239,9 +242,9 @@ public class Evaluate {
 		List<Card> straight = new ArrayList<Card>();
 		for (int i = 0; i < temp.size() - 4; i++) {
 			if (temp.get(i).getValue() + 1 == temp.get(i + 1).getValue()
-					&& temp.get(i).getValue() + 2 == temp.get(i + 2).getValue()
-					&& temp.get(i).getValue() + 3 == temp.get(i + 3).getValue()
-					&& temp.get(i).getValue() + 4 == temp.get(i + 4).getValue()) {
+				&& temp.get(i).getValue() + 2 == temp.get(i + 2).getValue()
+				&& temp.get(i).getValue() + 3 == temp.get(i + 3).getValue()
+				&& temp.get(i).getValue() + 4 == temp.get(i + 4).getValue()) {
 
 				straight = new ArrayList<Card>();
 				straight.add(temp.get(i));
@@ -293,8 +296,7 @@ public class Evaluate {
 			if (threeOfAKind.size() == 1) {
 				hand = new ArrayList<Card>(threeOfAKind.get(0));
 			} else if (threeOfAKind.size() == 2) {
-				if (threeOfAKind.get(0).get(0).getValue() > threeOfAKind.get(1)
-						.get(0).getValue()) {
+				if (threeOfAKind.get(0).get(0).getValue() > threeOfAKind.get(1).get(0).getValue()) {
 					hand = new ArrayList<Card>(threeOfAKind.get(0));
 				} else {
 					hand = new ArrayList<Card>(threeOfAKind.get(1));
@@ -363,8 +365,7 @@ public class Evaluate {
 		if (pairs.size() != 0) {
 			int max = 0;
 			for (int i = 1; i < pairs.size(); i++) {
-				if (pairs.get(i).get(0).getValue() > pairs.get(max).get(0)
-						.getValue()) {
+				if (pairs.get(i).get(0).getValue() > pairs.get(max).get(0).getValue()) {
 					max = i;
 				}
 			}
