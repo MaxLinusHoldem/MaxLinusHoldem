@@ -104,7 +104,7 @@ public class TexasHoldem extends JFrame {
 				players.get(dealerID % players.size()).betSmallBlind();
 				delay(500);
 
-				players.get((dealerID + 1) % players.size()).bet(BIGBLIND, 0);
+				players.get((dealerID + 1) % players.size()).betBigBlind();
 				delay(500);
 
 				currentBetPlayer = (dealerID + 1) % players.size();
@@ -112,7 +112,7 @@ public class TexasHoldem extends JFrame {
 				players.get((dealerID + 1) % players.size()).betSmallBlind();
 				delay(500);
 
-				players.get((dealerID + 2) % players.size()).bet(BIGBLIND, 0);
+				players.get((dealerID + 2) % players.size()).betBigBlind();;
 				delay(500);
 
 				currentBetPlayer = (dealerID + 2) % players.size();

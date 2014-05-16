@@ -410,16 +410,30 @@ public abstract class Player {
 	 * Lets the player bet the small blind.
 	 */
 	public void betSmallBlind() {
+		if (this.money <= TexasHoldem.SMALLBLIND) {
+			allIn();
+			return;
+		}
 		this.bet += TexasHoldem.SMALLBLIND;
 		this.money -= TexasHoldem.SMALLBLIND;
 		cashLabel.setText(String.format("%d $", money));
 		betLabel.setText(String.format("Current bet: %d $", bet));
-
-		if (this.money == 0) {
-			this.isAllIn = true;
-		}
 	}
 
+	/**
+	 * Lets the player bet the big blind.
+	 */
+	public void betBigBlind() {
+		if (this.money <= TexasHoldem.BIGBLIND) {
+			allIn();
+			return;
+		}
+		this.bet += TexasHoldem.BIGBLIND;
+		this.money -= TexasHoldem.BIGBLIND;
+		cashLabel.setText(String.format("%d $", money));
+		betLabel.setText(String.format("Current bet: %d $", bet));
+	}
+	
 	/**
 	 * Tells if the player is all-in or not.
 	 * 
