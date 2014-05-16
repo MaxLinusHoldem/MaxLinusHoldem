@@ -25,7 +25,7 @@ public abstract class Player {
 	protected boolean isAllIn; // Indicates if the player is all-in.
 	public static final int STARTMONEY = 100; // The player's start money.
 
-	// Variables that has to do with the GUI.
+	// Variables that hold GUI elements and properties.
 	private GamePanel gamePanel;
 	private int x;
 	private int y;
@@ -88,6 +88,7 @@ public abstract class Player {
 		int chairWidth = chairImg.getWidth();
 		int chairHeight = chairImg.getHeight();
 
+		// Set the graphical coordinates of the player's chair.
 		if (ID == 0) {
 			x = 920 - chairWidth;
 			y = 10;
@@ -114,12 +115,16 @@ public abstract class Player {
 			y = 10;
 		}
 
+		// Create a graphical label containing the chair
+		// image and draw it on the game panel.
 		JLabel chairLabel = new JLabel(new ImageIcon(chairImg));
 		chairLabel.setBounds(x, y, chairWidth, chairHeight);
 		chairLabel.repaint();
 		gamePanel.add(chairLabel);
 		gamePanel.setPosition(chairLabel, -1);
 
+		// Create a graphical label containing the player's name
+		// and draw it on the game panel.
 		JLabel nameLabel = new JLabel(name, SwingConstants.CENTER);
 		nameLabel.setBounds(x, y + 160, 216, 11);
 		nameLabel.setBackground(new Color(0x9F, 0x4F, 0x00));
@@ -128,6 +133,9 @@ public abstract class Player {
 		gamePanel.add(nameLabel);
 		gamePanel.setPosition(nameLabel, 0);
 
+		// Create a graphical label containing the
+		// player's current money balance and draw
+		// it on the game panel.
 		cashLabel = new JLabel(String.format("%d $", money),
 				SwingConstants.CENTER);
 		cashLabel.setBounds(x, y + 175, 216, 11);
@@ -137,6 +145,8 @@ public abstract class Player {
 		gamePanel.add(cashLabel);
 		gamePanel.setPosition(cashLabel, 0);
 
+		// Create a graphical label containing the player's
+		// current bet and draw it on te game panel.
 		betLabel = new JLabel(String.format("Current bet: %d $", bet),
 				SwingConstants.CENTER);
 		betLabel.setBounds(x, y + 190, 216, 11);
@@ -165,23 +175,33 @@ public abstract class Player {
 		if (hand[0] == null) {
 			hand[0] = card;
 
+			// If the Player is the user, use the face of the card, otherwise the back.
 			BufferedImage cardImg = this instanceof User ? card.getImage()
 					: card.getBackImage();
+
+			// Create a graphical label containing the specified image of the card.
 			cardLabel1 = new JLabel(new ImageIcon(cardImg));
 			cardLabel1.setBounds(x + 32, y + 60, cardImg.getWidth(),
 					cardImg.getHeight());
 			cardLabel1.repaint();
+
+			// Draw the card label on the game panel
 			gamePanel.add(cardLabel1);
 			gamePanel.setPosition(cardLabel1, 0);
 		} else if (hand[1] == null) {
 			hand[1] = card;
 
+			// If the Player is the user, use the face of the card, otherwise the back.
 			BufferedImage cardImg = this instanceof User ? card.getImage()
 					: card.getBackImage();
+
+			// Create a graphical label containing the specified image of the card.
 			cardLabel2 = new JLabel(new ImageIcon(cardImg));
 			cardLabel2.setBounds(x + 112, y + 60, cardImg.getWidth(),
 					cardImg.getHeight());
 			cardLabel2.repaint();
+
+			// Draw the card label on the game panel
 			gamePanel.add(cardLabel2);
 			gamePanel.setPosition(cardLabel2, 0);
 		} else {
@@ -194,6 +214,7 @@ public abstract class Player {
 	 * Shows the card in the GUI.
 	 */
 	public void showCards() {
+		// Set the graphical card labels' icons to their card image representation.
 		cardLabel1.setIcon(new ImageIcon(hand[0].getImage()));
 		cardLabel2.setIcon(new ImageIcon(hand[1].getImage()));
 	}
@@ -205,6 +226,7 @@ public abstract class Player {
 		hand[0] = null;
 		hand[1] = null;
 
+		// Remove the graphical card labels from the game panel.
 		if (cardLabel1 != null) {
 			gamePanel.remove(cardLabel1);
 		}
@@ -249,6 +271,7 @@ public abstract class Player {
 	 */
 	public void addMoney(int profit) {
 		this.money += profit;
+		// Update the graphical label containing the user's money.
 		cashLabel.setText(String.format("%d $", money));
 	}
 
@@ -278,6 +301,7 @@ public abstract class Player {
 	public int removeBet() {
 		int ret = bet;
 		bet = 0;
+		// Update the Graphical label containing the user's current bet.
 		betLabel.setText(String.format("Current bet: %d $", bet));
 		return ret;
 	}
