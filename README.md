@@ -21,7 +21,11 @@ the money in the game, you win!
 
 MaxLinusHoldem Copyright © 2014 Max Wällstedt <max.wallstedt@gmail.com> and Linus Wåreus <linus@warues.se>.
 
-MaxLinusHoldem is [Free Software](http://www.gnu.org/philosophy/free-sw.html) under the [GNU General Public License version 3 (GPLv3)](http://www.gnu.org/licenses/gpl.html). See the file "COPYING" for details.
+MaxLinusHoldem is [Free Software](http://www.gnu.org/philosophy/free-sw.html) under the [GNU General Public License version 3 (GPLv3)](http://www.gnu.org/licenses/gpl.html).
+
+MaxLinusHoldem comes with ABSOLUTELY NO WARRANTY.
+
+See the file "COPYING" for details.
 
 ### Credits ###
 
